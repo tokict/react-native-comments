@@ -1,0 +1,23 @@
+{
+    "name": "react-native-comments",
+    "version": "0.1",
+    "description": "Complete view component for rendering comments in RN",
+    "main": "index.js",
+    "repository": "https://github.com/tokict/react-native-comments",
+    "keywords": [
+      "react-native",
+      "react-native-comments",
+      "comments"
+    ],
+    "author": "Tino Tokic <ttokic1985@gmail.com>",
+    "license": "MIT",
+    "peerDependencies": {
+      "react-native": "0.51"
+    },
+    "dependencies": {
+      "prop-types": "^15.5.10",
+      "react-native-collapsible": "^0.9.0",
+      "react-native-vector-icons": "^4.3.0",
+      "react-native-timeago": "^0.4.0"
+    }
+  }
