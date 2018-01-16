@@ -14,6 +14,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 
+import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
@@ -27,12 +28,12 @@ export default class Comments extends Component {
     this.bookmark = null
     this.props = props
     this.state = {
-      loadingComments: true,
+      loadingComments: props.data && props.data.length ? false : true,
       comments: props.data,
       likesModalVisible: false,
       likesModalData: null,
       editModalVisible: false,
-      commentsLastUpdated: props.commentsLastUpdated,
+      commentsLastUpdated: null,
       expanded: [],
       pagination: []
     }
@@ -104,8 +105,8 @@ export default class Comments extends Component {
         if (!this.props.isChild(c)) {
           this.toggleExpand(c)
         } else {
-          let input = this.textInputs['input' + parent_id]
-          console.log(['input' + parent_id])
+          let input = this.textInputs['input' + this.props.parentIdExtractor(c)]
+          console.log(['input' + this.props.parentIdExtractor(c)])
           input.measure((x, y, width, height, pageX, pageY) => {
             input.focus()
             this.props.replyAction(pageY)
@@ -137,7 +138,7 @@ export default class Comments extends Component {
   }
 
   /*Create comment instance and return*/
-  renderChildren (items, parent_id) {
+  renderChildren (items) {
     if (!items.length) return
     let self = this
     return items.map(function (c) {
@@ -173,8 +174,12 @@ export default class Comments extends Component {
   }
 
   canUserEdit (item) {
-    let created = new Date(this.props.createdTimeExtractor(item)).getTime() / 1000
-    return new Date().getTime() / 1000 - created < this.props.editMinuteLimit * 60
+    if(this.props.viewingUserName == this.props.usernameExtractor(item)) {
+      if (!this.props.editMinuteLimit) return true
+      let created = new Date(this.props.createdTimeExtractor(item)).getTime() / 1000
+      return new Date().getTime() / 1000 - created < this.props.editMinuteLimit * 60
+    }
+    return false
   }
 
   renderLikesModal () {
@@ -317,26 +322,27 @@ export default class Comments extends Component {
           />
           : null}
 
+        {this.state.loadingComments ? <ActivityIndicator
+          animating={this.state.loadingComments}
+          style={{
+            height: 20,
+            alignItems: 'center',
+            justifyContent: 'center',
 
-        <TouchableHighlight
-          onPress={() => {
+          }}
+          size="small"
+        /> : <TouchableHighlight style={{height: 70}}
+          onPress={() => {console.log(12, this.state.comments[this.state.comments.length - 1])
             this.paginate(this.props.keyExtractor(this.state.comments[this.state.comments.length - 1]), 'up')
 
           }
           }>
-          <View>
-            {this.state.loadingComments ? <ActivityIndicator
-              animating={this.state.loadingComments}
-              style={{
-                height: 20,
-                alignItems: 'center',
-                justifyContent: 'center',
 
-              }}
-              size="small"
-            /> : <Text style={{textAlign: 'center'}}>Show more</Text>}
-          </View>
-        </TouchableHighlight>
+            <Text style={{textAlign: 'center'}}>Show more</Text>
+
+        </TouchableHighlight>}
+
+
         <Modal animationType={'slide'}
                transparent={false}
                visible={this.state.likesModalVisible}
@@ -390,3 +396,33 @@ export default class Comments extends Component {
     )
   }
 }
+
+Comments.propTypes = {
+  data: PropTypes.array.isRequired,
+  viewingUserName: PropTypes.string,
+  initialDisplayCount: PropTypes.number,
+  editMinuteLimit: PropTypes.number,
+  lastCommentUpdate: PropTypes.number,
+  usernameTapAction: PropTypes.func.isRequired,
+  childPropName: PropTypes.string.isRequired,
+  isChild: PropTypes.func.isRequired,
+  keyExtractor: PropTypes.func.isRequired,
+  parentExtractor: PropTypes.func.isRequired,
+  usernameExtractor: PropTypes.func.isRequired,
+  editTimeExtractor: PropTypes.func.isRequired,
+  createdTimeExtractor: PropTypes.func.isRequired,
+  bodyExtractor: PropTypes.func.isRequired,
+  imageExtractor: PropTypes.func.isRequired,
+  likeExtractor: PropTypes.func.isRequired,
+  reportedExtractor: PropTypes.func.isRequired,
+  likesExtractor: PropTypes.func.isRequired,
+  childrenCountExtractor: PropTypes.func.isRequired,
+  replyAction: PropTypes.func.isRequired,
+  saveAction: PropTypes.func.isRequired,
+  editAction: PropTypes.func.isRequired,
+  reportAction: PropTypes.func.isRequired,
+  likeAction: PropTypes.func.isRequired,
+  paginateAction: PropTypes.func.isRequired
+}
+
+

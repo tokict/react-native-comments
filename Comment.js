@@ -11,6 +11,8 @@ import {
   TouchableHighlight,
   TouchableOpacity
 } from 'react-native'
+
+import PropTypes from 'prop-types'
 import TimeAgo from 'react-native-timeago'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
@@ -88,4 +90,22 @@ export default class Comment extends Component {
       </View>
     )
   }
+}
+
+Comment.propTypes = {
+  body: PropTypes.string,
+  canEdit: PropTypes.bool,
+  child: PropTypes.bool,
+  editComment: PropTypes.func,
+  image: PropTypes.string,
+  likeAction: PropTypes.func,
+  liked: PropTypes.bool,
+  likes: PropTypes.array,
+  likesTapAction: PropTypes.func,
+  replyAction: PropTypes.func,
+  reportAction: PropTypes.func,
+  reported: PropTypes.bool,
+  updatedAt: PropTypes.string,
+  username: PropTypes.string,
+  usernameTapAction: PropTypes.func
 }
