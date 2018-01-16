@@ -406,7 +406,7 @@ Comments.propTypes = {
   childPropName: PropTypes.string.isRequired,
   isChild: PropTypes.func.isRequired,
   keyExtractor: PropTypes.func.isRequired,
-  parentExtractor: PropTypes.func.isRequired,
+  parentIdExtractor: PropTypes.func.isRequired,
   usernameExtractor: PropTypes.func.isRequired,
   editTimeExtractor: PropTypes.func.isRequired,
   createdTimeExtractor: PropTypes.func.isRequired,
