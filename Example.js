@@ -13,7 +13,7 @@ import {
 import styles from './styles'
 import Comments from 'react-native-comments'
 import * as commentActions from './ExampleActions'
-
+import moment from 'moment'
 
 export default class ExampleComments extends Component {
  constructor (props) {
@@ -193,6 +193,10 @@ export default class ExampleComments extends Component {
             this.setState({
               comments: comments,
               lastCommentUpdate: new Date().getTime()})
+            
+            if(!parentCommentId){
+              this.refs.scrollView.scrollToEnd()
+            }
 
           }}
 

@@ -6,11 +6,7 @@
     "liked": true,
     "reported": false,
     "likes": [
-      {
-        "username": "someUser",
-        "user_id": 345,
-        "image": "https://ireview.live/img/no-user.png"
-      }
+
     ],
     "email": "testUser",
     "created_at": "2017-12-23 14:45:06",
@@ -24,11 +20,7 @@
         "liked": true,
         "reported": false,
         "likes": [
-          {
-            "username": "someUser",
-            "user_id": 345,
-            "image": "https://ireview.live/img/no-user.png"
-          }
+
         ],
         "email": "Jayne_Kuhic@sydney.com",
         "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et"
@@ -58,11 +50,7 @@
         "liked": false,
         "reported": true,
         "likes": [
-          {
-            "username": "someUser",
-            "user_id": 345,
-            "image": "https://ireview.live/img/no-user.png"
-          }
+
         ],
         "email": "Lew@alysha.tv",
         "body": "non et atque\noccaecati deserunt quas accusantium unde odit nobis qui voluptatem\nquia voluptas consequuntur itaque dolor\net qui rerum deleniti ut occaecati"
@@ -109,11 +97,8 @@
         "liked": false,
         "reported": false,
         "likes": [
-          {
-            "username": "someUser",
-            "user_id": 345,
-            "image": "https://ireview.live/img/no-user.png"
-          }
+
+
         ],
         "email": "Dallas@ole.me",
         "body": "maiores sed dolores similique labore et inventore et\nquasi temporibus esse sunt id et\neos voluptatem aliquam\naliquid ratione corporis molestiae mollitia quia et magnam dolor"
@@ -8006,11 +7991,6 @@
     "liked": false,
     "reported": false,
     "likes": [
-      {
-        "username": "someUser",
-        "user_id": 345,
-        "image": "https://ireview.live/img/no-user.png"
-      }
     ],
     "email": "Pearline@veda.ca",
     "body": "quia non dolor\ncorporis consectetur velit eos quis\nincidunt ut eos nesciunt repellendus voluptas voluptate sint neque\ndoloribus est minima autem quis velit illo ea neque"
@@ -8041,13 +8021,7 @@
     "updated_at": "2017-12-25 13:22:33",
     "liked": false,
     "reported": false,
-    "likes": [
-      {
-        "username": "someUser",
-        "user_id": 345,
-        "image": "https://ireview.live/img/no-user.png"
-      }
-    ],
+    "likes": [],
     "email": "Eliane@libby.net",
     "body": "quod corrupti eum quisquam rerum accusantium tempora\nreprehenderit qui voluptate et sunt optio et\niusto nihil amet omnis labore cumque quo\nsaepe omnis aut quia consectetur"
   },
@@ -8060,11 +8034,6 @@
     "liked": false,
     "reported": false,
     "likes": [
-      {
-        "username": "someUser",
-        "user_id": 345,
-        "image": "https://ireview.live/img/no-user.png"
-      }
     ],
     "email": "Trey.Harber@christop.biz",
     "body": "tempora sint qui iste itaque non neque qui suscipit\nenim quas rerum totam impedit\nesse nulla praesentium natus explicabo doloremque atque maxime\nmollitia impedit dolorem occaecati officia in provident eos"
@@ -8078,11 +8047,6 @@
     "liked": false,
     "reported": false,
     "likes": [
-      {
-        "username": "someUser",
-        "user_id": 345,
-        "image": "https://ireview.live/img/no-user.png"
-      }
     ],
     "email": "Kailyn@ivory.info",
     "body": "ut in nostrum\nut et incidunt et minus nulla perferendis libero delectus\nnulla nemo deleniti\ndeleniti facere autem vero velit non molestiae assumenda"
