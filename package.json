@@ -1,6 +1,6 @@
 {
   "name": "react-native-comments",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Complete view component for rendering comments in RN",
   "main": "index.js",
   "repository": "https://github.com/tokict/react-native-comments",
