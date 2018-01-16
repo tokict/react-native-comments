@@ -12,6 +12,7 @@ sampleCommentsRaw.forEach(c => {
 
 const sampleComments = Object.freeze(sampleCommentsRaw)
 
+import moment from 'moment'
 
 export function getComments () {
   const c = [...sampleComments]
@@ -138,36 +139,37 @@ export function save (comments, text, parentCommentId, date, username) {
   })
 
 
+  let com = {
+    "parentId": null,
+    "commentId": lastCommentId+1,
+    "created_at": date,
+    "updated_at": date,
+    "liked": false,
+    "reported": false,
+    "email": username,
+    "body" : text,
+    "likes": []
+  }
+
   if (!parentCommentId) {
-
-
-    let c = {
-      "parentId": null,
-      "commentId": lastCommentId+1,
-      "created_at": date,
-      "updated_at": date,
-      "liked": false,
-      "reported": false,
-      "email": username,
-      "body" : text,
-      "likes": []
-    }
-
-      comments.push(c);
-    console.log(comments);
+      comments.push(com);
 
   } else {
+
     comments.find(function (c) {
-     if(c.commmentId === parentCommentId){
-       c.parentId =c.commmentId;
+
+     if(c.commentId === parentCommentId){
+
+       com.parentId = c.commentId;
        if(c.children){
-         c.children.push(c)
+         c.children.push(com)
        }else{
-         c.children = [c]
+         c.children = [com]
+         console.log(c.children)
        }
        return true
      }
-    })
+    }, this)
   }
   return comments
 }

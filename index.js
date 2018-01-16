@@ -70,17 +70,18 @@ export default class Comments extends Component {
     }
   }
 
-  isExpanded (item) {
-    return this.state.expanded.indexOf(item.comment_id) !== -1
+  isExpanded (id) {
+    return this.state.expanded.indexOf(id) !== -1
   }
 
-  toggleExpand (item) {
+  toggleExpand (id) {
 
     let expanded = this.state.expanded
 
-    let index = expanded.indexOf(item.comment_id)
+    let index = expanded.indexOf(id)
+    console.log(expanded);
     if (index === -1) {
-      expanded.push(item.comment_id)
+      expanded.push(id)
     } else {
 
       expanded.splice(index, 1)
@@ -102,7 +103,7 @@ export default class Comments extends Component {
       updatedAt={this.props.editTimeExtractor(c)}
       replyAction={() => {
         if (!this.props.isChild(c)) {
-          this.toggleExpand(c)
+          this.toggleExpand(this.props.keyExtractor(c))
         } else {
           let input = this.textInputs['input' + this.props.parentIdExtractor(c)]
           console.log(['input' + this.props.parentIdExtractor(c)])
@@ -213,7 +214,7 @@ export default class Comments extends Component {
             numberOfLines={3}
           />
           <TouchableHighlight onPress={() => {
-            this.props.saveAction(this.newCommentText)
+            this.props.saveAction(this.newCommentText, false)
             this.newCommentText = null
             this.textInputs['inputMain'].clear()
 
@@ -250,7 +251,7 @@ export default class Comments extends Component {
 
                           {this.generateComment(item)}
                           <View style={{marginLeft: 70}}>
-                            {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(item)}>
+                            {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
                               <View style={styles.repliedSection}>
                                 <Image style={styles.repliedImg}
                                        source={{uri: 'http://2.bp.blogspot.com/_49qDiEUz6EI/SrdOxJq8bqI/AAAAAAAAAEQ/ExxEYG8wskQ/s200/A-246904-1209425280.jpeg'}}/>
@@ -264,7 +265,7 @@ export default class Comments extends Component {
                             <Collapsible
                               easing={'easeOutCubic'}
                               duration={400}
-                              collapsed={!this.isExpanded(item)}>
+                              collapsed={!this.isExpanded(this.props.keyExtractor(item))}>
                               {this.props.childrenCountExtractor(item) ? <View>
                                   {this.props.childrenCountExtractor(item) > item[this.props.childPropName].length
                                     ? <TouchableHighlight
@@ -299,7 +300,7 @@ export default class Comments extends Component {
                                 />
                                 <TouchableHighlight onPress={() => {
                                   this.props.saveAction(
-                                    this.replyCommentText, item.comment_id)
+                                    this.replyCommentText, this.props.keyExtractor(item))
                                   this.replyCommentText = null
                                   this.textInputs['input' + this.props.keyExtractor(item)].clear()
                                 }
