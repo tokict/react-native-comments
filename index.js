@@ -18,7 +18,6 @@ import PropTypes from 'prop-types'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
-import * as Animatable from 'react-native-animatable'
 import Comment from './Comment'
 
 export default class Comments extends Component {

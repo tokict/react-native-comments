@@ -16,10 +16,10 @@ import * as commentActions from './ExampleActions'
 
 
 export default class ExampleComments extends Component {
-  constructor (props) {
+ constructor (props) {
     super(props)
     this.props = props
-    this.config = new Config()
+    this.actions = commentActions
     this.state = {
       comments: [],
       loadingComments: true,
@@ -35,17 +35,19 @@ export default class ExampleComments extends Component {
 
   static navigatorStyle = {}
 
-  componentWillReceiveProps (nextProps) {
-
-    if (nextProps.comments) {
-      this.setState({comments: nextProps.comments, loadingComments: false})
-    }
-
+  componentWillMount(){
+    const c = this.actions.getComments();
+    this.setState({
+      comments : c,
+      loadingComments: false,
+      lastCommentUpdate: new Date().getTime()
+    })
   }
+
 
   extractUsername (c) {
     try {
-      return c.user && c.user.username && c.user.username !== '' ? JSON.parse(c.user.username) : null
+      return c.email  !== '' ? c.email : null
     } catch (e) {
       console.log(e)
     }
@@ -53,7 +55,7 @@ export default class ExampleComments extends Component {
 
   extractBody (c) {
     try {
-      return c.body && c.body !== '' ? JSON.parse(c.body) : null
+      return c.body && c.body !== '' ? c.body : null
     } catch (e) {
       console.log(e)
     }
@@ -62,9 +64,8 @@ export default class ExampleComments extends Component {
   extractImage (c) {
 
     try {
-      return c.user.image_id && c.user.image_id !== '' ? this.config.urls.api_url +
-        '/data/images/users/' + c.user.image_id : this.config.urls.api_url +
-        '/data/images/users/no_image.png'
+      return c.image_id && c.user.image_id !== '' ? c.user.image_id
+        : 'https://ireview.live/img/no-user.png'
 
     } catch (e) {
       console.log(e)
@@ -96,24 +97,22 @@ export default class ExampleComments extends Component {
   }
 
   likeExtractor (item) {
-    return item.hasUserLiked
+    return item.liked
   }
 
   reportedExtractor (item) {
     return item.reported
   }
 
-
-
   likesExtractor (item) {
 
     return item.likes.map((like) => {
       return {
         image: like.image,
-        name: like.user.name,
+        name: like.username,
         user_id: like.user_id,
         tap: (username) => {
-         console.log('Taped: '+username)
+          console.log('Taped: '+username)
         }
       }
     })
@@ -121,7 +120,7 @@ export default class ExampleComments extends Component {
   }
 
   isCommentChild(item){
-    return  item.parent !== null
+    return  item.parentId !== null
   }
 
   render () {
@@ -140,42 +139,29 @@ export default class ExampleComments extends Component {
                     this.scrollIndex = event.nativeEvent.contentOffset.y
                   }}
                   ref={'scrollView'}>
-        {review ? <View>
-            <ReviewCardLarge review={review}
-                             vote={review.vote}
-                             collapsed={false}
-                             followedUser={review.followed_user}
-                             navigator={this.props.navigator}
-            />
-          </View>
-          : null}
 
         {this.state.comments.length ? <Comments
           data={data}
           //To compare is user the owner
-          viewingUserName={this.state.login.user ? this.state.login.user.username : null}
+          viewingUserName={'testUser'}
           //how many comments to display on init
-          initialDisplayCount={10}
+          initialDisplayCount={5}
           //How many minutes to pass before locking for editing
-          editMinuteLimit={900}
+          editMinuteLimit={0}
 
           lastCommentUpdate={this.state.lastCommentUpdate}
           //What happens when user taps on username or photo
           usernameTapAction={(username) => {
-            this.props.navigator.showModal({
-              screen: 'M.Profile',
-              passProps: {
-                profileUsername: username,
-                title: username
-              }
-            })
+            console.log('Taped user: '+username)
           }}
           //Where can we find the children within item.
           //Children must be prepared before for pagination sake
           childPropName={'children'}
-          isChild={() =>this.isCommentChild(item)}
+          isChild={(item) =>this.isCommentChild(item)}
           //We use this for key prop on flat list (i.e. its comment_id)
-          keyExtractor={item => item.comment_id}
+          keyExtractor={item => item.commentId}
+          //Extract the key indicating comments parent
+          parentIdExtractor={item=>{console.log(item); return item.parentId}}
           //what prop holds the comment owners username
           usernameExtractor={item => this.extractUsername(item)}
           //when was the comment last time edited
@@ -202,33 +188,57 @@ export default class ExampleComments extends Component {
           }}
           //what to do when user clicks submits edited comment
           saveAction={(text, parentCommentId) => {
-            this.props.actions.save(this.props.id, text, 'review', parentCommentId)
+            let date = moment().format('YYYY-MM-DD H:mm:ss');
+            let comments = this.actions.save(this.state.comments, text, parentCommentId, date, 'testUser')
+            this.setState({
+              comments: comments,
+              lastCommentUpdate: new Date().getTime()})
+
           }}
 
           //what to do when user clicks submits edited comment
           editAction={(text, comment) => {
-            this.props.actions.edit(this.props.id, comment, text)
+            let comments = this.actions.edit(this.state.comments, comment, text)
+            this.setState({
+              comments: comments,
+              lastCommentUpdate: new Date().getTime()})
           }}
 
           //what to do when user clicks report submit
-          reportAction={(comment) => this.props.actions.report(this.props.id, comment)}
+          reportAction={(comment) => {
+            let comments = this.actions.report(this.state.comments, comment)
+            this.setState({
+              comments: comments,
+              lastCommentUpdate: new Date().getTime()})
+          }
+
+          }
           //what to do when user clicks like
           likeAction={(comment) => {
-            this.props.actions.like(this.props.id, comment)
+            let comments = this.actions.like(this.state.comments, comment)
+            this.setState({
+              comments: comments,
+              lastCommentUpdate: new Date().getTime()})
           }
           }
           //Must return promise
           paginateAction={(from_comment_id, direction, parent_comment_id) => {
             //Must return array of new comments after pagination
-            this.props.actions.paginateComments(
-              review.review_id,
-              'review',
+            let newComments = this.actions.paginateComments(
+              this.state.comments,
               from_comment_id,
               direction,
               parent_comment_id)
+            this.setState({
+              comments: newComments,
+              lastCommentUpdate: new Date().getTime()})
             let self = this
             setTimeout(function () {
-              self.refs.scrollView.scrollTo(500)
+              if(direction == 'up') {
+                self.refs.scrollView.scrollTo({x: 0, y: 500, animated: true})
+              }else{
+                self.refs.scrollView.scrollTo({x: 0, y: 0, animated: true})
+              }
             }, 3000)
 
           }
@@ -240,4 +250,39 @@ export default class ExampleComments extends Component {
     )
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
