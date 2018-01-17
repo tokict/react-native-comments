@@ -3,7 +3,7 @@
 # Progressive Input
 ![Screenshot](https://github.com/tokict/react-native-comments/blob/master/screenshot.gif)
 
-[React native comments](https://github.com/khaiql/react-native-progressive-input) is a presentational component for rendering Facebook like comments with likes, reporting, replying,  pagination, etc. The pagination and actions are proxied which means you need to have your own pagination and data storage solution and implement action logic (liking, reporting etc).
+[React native comments](https://github.com/tokict/react-native-comments) is a presentational component for rendering Facebook like comments with likes, reporting, replying,  pagination, etc. The pagination and actions are proxied which means you need to have your own pagination and data storage solution and implement action logic (liking, reporting etc).
 
 ## Getting started
 
@@ -15,7 +15,7 @@ If you dont have the dependency `react-native-vector-icons`, please make sure yo
 
 * `react-native link`
 
-on the terminal. This will add some necessary fonts and Info.plist updates on your xcode project.
+on the terminal and restart your packager. This will add some necessary fonts and Info.plist updates on your xcode project.
 
 
 ## Implementation notes
