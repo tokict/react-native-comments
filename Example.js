@@ -3,11 +3,8 @@
  */
 import React, { Component } from 'react'
 import {
-  View,
-  Text,
   ScrollView,
-  ActivityIndicator,
-  Dimensions
+  Image
 } from 'react-native'
 
 import styles from './styles'
@@ -16,7 +13,7 @@ import * as commentActions from './ExampleActions'
 import moment from 'moment'
 
 export default class ExampleComments extends Component {
- constructor (props) {
+  constructor (props) {
     super(props)
     this.props = props
     this.actions = commentActions
@@ -139,6 +136,8 @@ export default class ExampleComments extends Component {
                     this.scrollIndex = event.nativeEvent.contentOffset.y
                   }}
                   ref={'scrollView'}>
+        <Image style={{height: 200}}
+               source={{uri: 'https://pbs.twimg.com/profile_images/447374371917922304/P4BzupWu_400x400.jpeg' }}/>
 
         {this.state.comments.length ? <Comments
           data={data}
@@ -149,7 +148,6 @@ export default class ExampleComments extends Component {
           //How many minutes to pass before locking for editing
           editMinuteLimit={0}
 
-          lastCommentUpdate={this.state.lastCommentUpdate}
           //What happens when user taps on username or photo
           usernameTapAction={(username) => {
             console.log('Taped user: '+username)
@@ -161,7 +159,7 @@ export default class ExampleComments extends Component {
           //We use this for key prop on flat list (i.e. its comment_id)
           keyExtractor={item => item.commentId}
           //Extract the key indicating comments parent
-          parentIdExtractor={item=>{console.log(item); return item.parentId}}
+          parentIdExtractor={item=>item.parentId}
           //what prop holds the comment owners username
           usernameExtractor={item => this.extractUsername(item)}
           //when was the comment last time edited
@@ -191,9 +189,8 @@ export default class ExampleComments extends Component {
             let date = moment().format('YYYY-MM-DD H:mm:ss');
             let comments = this.actions.save(this.state.comments, text, parentCommentId, date, 'testUser')
             this.setState({
-              comments: comments,
-              lastCommentUpdate: new Date().getTime()})
-            
+              comments: comments})
+
             if(!parentCommentId){
               this.refs.scrollView.scrollToEnd()
             }
@@ -204,16 +201,14 @@ export default class ExampleComments extends Component {
           editAction={(text, comment) => {
             let comments = this.actions.edit(this.state.comments, comment, text)
             this.setState({
-              comments: comments,
-              lastCommentUpdate: new Date().getTime()})
+              comments: comments})
           }}
 
           //what to do when user clicks report submit
           reportAction={(comment) => {
             let comments = this.actions.report(this.state.comments, comment)
             this.setState({
-              comments: comments,
-              lastCommentUpdate: new Date().getTime()})
+              comments: comments})
           }
 
           }
@@ -221,21 +216,21 @@ export default class ExampleComments extends Component {
           likeAction={(comment) => {
             let comments = this.actions.like(this.state.comments, comment)
             this.setState({
-              comments: comments,
-              lastCommentUpdate: new Date().getTime()})
+              comments: comments})
           }
           }
           //Must return promise
           paginateAction={(from_comment_id, direction, parent_comment_id) => {
             //Must return array of new comments after pagination
+
             let newComments = this.actions.paginateComments(
               this.state.comments,
               from_comment_id,
               direction,
               parent_comment_id)
+
             this.setState({
-              comments: newComments,
-              lastCommentUpdate: new Date().getTime()})
+              comments: newComments})
             let self = this
             setTimeout(function () {
               if(direction == 'up') {

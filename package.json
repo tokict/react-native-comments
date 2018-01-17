@@ -1,23 +1,59 @@
 {
-  "name": "react-native-comments",
-  "version": "1.0.4",
+  "_from": "react-native-comments@1.0.3",
+  "_id": "react-native-comments@1.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-Ppa32nOoFtnKFszb+oLx3TxOXW73aYqAvRIiwJN3nkfrzgjfmpPpfeArO3Oy36zxfLyfbv0lSWnig1vQ6XdfUg==",
+  "_location": "/react-native-comments",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "react-native-comments@1.0.3",
+    "name": "react-native-comments",
+    "escapedName": "react-native-comments",
+    "rawSpec": "1.0.3",
+    "saveSpec": null,
+    "fetchSpec": "1.0.3"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-comments/-/react-native-comments-1.0.3.tgz",
+  "_shasum": "76d0d6fbec99cc9000ed1ac6bdfabf24bbd16f86",
+  "_spec": "react-native-comments@1.0.3",
+  "_where": "/home/tino/testApp",
+  "author": {
+    "name": "Tino Tokic",
+    "email": "ttokic1985@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/tokict/react-native-comments/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "prop-types": "^15.5.10",
+    "react-native-collapsible": "^0.9.0",
+    "react-native-timeago": "^0.4.0",
+    "react-native-vector-icons": "^4.3.0"
+  },
+  "deprecated": false,
   "description": "Complete view component for rendering comments in RN",
-  "main": "index.js",
-  "repository": "https://github.com/tokict/react-native-comments",
+  "homepage": "https://github.com/tokict/react-native-comments#readme",
   "keywords": [
     "react-native",
     "react-native-comments",
     "comments"
   ],
-  "author": "Tino Tokic <ttokic1985@gmail.com>",
   "license": "MIT",
+  "main": "index.js",
+  "name": "react-native-comments",
   "peerDependencies": {
     "react-native": "0.51"
   },
-  "dependencies": {
-    "prop-types": "^15.5.10",
-    "react-native-collapsible": "^0.9.0",
-    "react-native-vector-icons": "^4.3.0",
-    "react-native-timeago": "^0.4.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tokict/react-native-comments.git"
+  },
+  "version": "1.0.3"
 }

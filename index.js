@@ -56,18 +56,11 @@ export default class Comments extends Component {
     if (nextProps.data) {
       this.setState({
         comments: nextProps.data,
-        commentsLastUpdated: new Date().getTime()
+        commentsLastUpdated: new Date().getTime(),
+        loadingComments: false
       })
     }
 
-    if (nextProps.lastCommentUpdate) {
-      this.setState({
-        comments: nextProps.data,
-        commentsLastUpdated: new Date().getTime(),
-        loadingComments: false,
-        editModalVisible: false,
-      })
-    }
   }
 
   isExpanded (id) {
@@ -79,7 +72,6 @@ export default class Comments extends Component {
     let expanded = this.state.expanded
 
     let index = expanded.indexOf(id)
-    console.log(expanded);
     if (index === -1) {
       expanded.push(id)
     } else {
@@ -106,7 +98,6 @@ export default class Comments extends Component {
           this.toggleExpand(this.props.keyExtractor(c))
         } else {
           let input = this.textInputs['input' + this.props.parentIdExtractor(c)]
-          console.log(['input' + this.props.parentIdExtractor(c)])
           input.measure((x, y, width, height, pageX, pageY) => {
             input.focus()
             this.props.replyAction(pageY)
@@ -124,7 +115,7 @@ export default class Comments extends Component {
       editAction={() => this.props.editAction(c)}
       editComment={() => {
         this.editCommentText = this.props.bodyExtractor(c)
-        this.editingComment = c
+        this.editingComment = c;
         this.setEditModalVisible(!this.state.editModalVisible)
 
       }
@@ -132,7 +123,6 @@ export default class Comments extends Component {
       likesTapAction={() => {
         this.setState({likesModalData: this.props.likesExtractor(c)})
         this.setLikesModalVisible(!this.state.likesModalVisible)
-        console.log(33)
       }}
     />
   }
@@ -168,7 +158,6 @@ export default class Comments extends Component {
 
   paginate (fromCommentId, direction, parentCommentId) {
     this.setState({loadingComments: true})
-    console.log(2, this.state)
     this.props.paginateAction(fromCommentId, direction, parentCommentId)
 
   }
@@ -184,7 +173,7 @@ export default class Comments extends Component {
 
   renderLikesModal () {
     if (this.state.likesModalData) {
-      console.log(this.state.likesModalData)
+
       return this.state.likesModalData.map(like => <TouchableHighlight
         onPress={() => like.tap(like.name)}
         style={styles.likeButton} key={like.user_id}>
@@ -199,7 +188,7 @@ export default class Comments extends Component {
     return null
   }
 
-  showCommentById () {}
+
 
   render () {
     return (
@@ -254,8 +243,8 @@ export default class Comments extends Component {
                             {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
                               <View style={styles.repliedSection}>
                                 <Image style={styles.repliedImg}
-                                       source={{uri: 'http://2.bp.blogspot.com/_49qDiEUz6EI/SrdOxJq8bqI/AAAAAAAAAEQ/ExxEYG8wskQ/s200/A-246904-1209425280.jpeg'}}/>
-                                <Text style={styles.repliedUsername}>Tino...</Text>
+                                       source={{uri: this.props.imageExtractor(item.children[0])}}/>
+                                <Text style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
                                 <Text style={styles.repliedText}>replied</Text>
                                 <Text
                                   style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
@@ -332,7 +321,7 @@ export default class Comments extends Component {
           }}
           size="small"
         /> : <TouchableHighlight style={{height: 70}}
-          onPress={() => {console.log(12, this.state.comments[this.state.comments.length - 1])
+          onPress={() => {
             this.paginate(this.props.keyExtractor(this.state.comments[this.state.comments.length - 1]), 'up')
 
           }
@@ -381,7 +370,9 @@ export default class Comments extends Component {
                   </View>
                 </TouchableHighlight>
                 <TouchableHighlight
-                  onPress={() => this.props.editAction(this.editCommentText, this.editingComment)}>
+                  onPress={() => {
+                    this.props.editAction(this.editCommentText, this.editingComment)
+                    this.setEditModalVisible(!this.state.editModalVisible)}}>
                   <View style={styles.editButtons}>
                     <Text>Save</Text>
                     <Icon name={'send'} size={20}/>
@@ -402,7 +393,6 @@ Comments.propTypes = {
   viewingUserName: PropTypes.string,
   initialDisplayCount: PropTypes.number,
   editMinuteLimit: PropTypes.number,
-  lastCommentUpdate: PropTypes.number,
   usernameTapAction: PropTypes.func.isRequired,
   childPropName: PropTypes.string.isRequired,
   isChild: PropTypes.func.isRequired,

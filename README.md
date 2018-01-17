@@ -32,7 +32,6 @@ Do not update comments if the user is not expecting update. Updating comments co
 | viewingUserName | string  | What is the username of the current user. used to check editability|
 | initialDisplayCount  | number        | How many comments to render at first |
 | editMinuteLimit   | number           | Time limit for editing new comments. None for limitless|
-| lastCommentUpdate  | number           | Used to notify the component there was a change in the comments array since it only does shallow check|
 | usernameTapAction  | func            | Function to call when username and image are taped on comment| username
 | childPropName       | string            | The property name where we can find array of children for particular comment|
 | isChild            | func            | Function to call to check is it a child or parent comment | bool |

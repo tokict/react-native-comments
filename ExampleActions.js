@@ -32,10 +32,12 @@ export function paginateComments (comments, from_commentId, direction, parent_co
 
     } else {
 
-      let start = lastIndex - 6 >= 0 ? lastIndex : 0
+      let start = lastIndex - 6 > 1 ? lastIndex - 6 : 0
 
       let part = c.slice(start, lastIndex)
+      console.log(start, lastIndex)
       comments = [...part, ...comments]
+
     }
   } else {
     const parentLastIndexDB = sampleComments.findIndex((c) => c.commentId == parent_commentId)
@@ -109,7 +111,6 @@ export function edit (comments,  cmnt, text) {
       if (c.children) {
         let isItFound = false
         c.children.find(function (child) {
-
           if (child.commentId === cmnt.commentId) {
             child.body = text
             isItFound = true
@@ -152,25 +153,29 @@ export function save (comments, text, parentCommentId, date, username) {
   }
 
   if (!parentCommentId) {
-      comments.push(com);
+    comments.push(com);
 
   } else {
 
     comments.find(function (c) {
 
-     if(c.commentId === parentCommentId){
+      if(c.commentId === parentCommentId){
 
-       com.parentId = c.commentId;
-       if(c.children){
-         c.children.push(com)
-       }else{
-         c.children = [com]
-         console.log(c.children)
-       }
-       return true
-     }
+        com.parentId = c.commentId;
+        if(c.children){
+          c.childrenCount = c.childrenCount+ 1
+          c.children.push(com)
+        }else{
+          c.childrenCount = 1
+          c.children = [com]
+
+
+        }
+        return true
+      }
     }, this)
   }
+  console.log(3, comments);
   return comments
 }
 
