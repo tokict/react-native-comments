@@ -1,7 +1,7 @@
 
 
 # React native comments
-![Screenshot](https://github.com/tokict/react-native-comments/blob/master/screenshot.gif)
+![Screenshot](https://lh5.googleusercontent.com/T7GZp_90KOfGy7runAGYDr0als_QlIj0SK4kiZPcCjXXEwOHkErO1Ce6M3R2-4gSpo5MtJJAlLYcTGUxSGNB=w1920-h1007)
 
 [React native comments](https://github.com/tokict/react-native-comments) is a presentational component for rendering Facebook like comments with likes, reporting, replying,  pagination, etc. The pagination and actions are proxied which means you need to have your own pagination and data storage solution and implement action logic (liking, reporting etc).
 
