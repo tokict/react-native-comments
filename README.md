@@ -1,6 +1,6 @@
 
 
-# Progressive Input
+# React native comments
 ![Screenshot](https://github.com/tokict/react-native-comments/blob/master/screenshot.gif)
 
 [React native comments](https://github.com/tokict/react-native-comments) is a presentational component for rendering Facebook like comments with likes, reporting, replying,  pagination, etc. The pagination and actions are proxied which means you need to have your own pagination and data storage solution and implement action logic (liking, reporting etc).
@@ -36,7 +36,7 @@ Do not update comments if the user is not expecting update. Updating comments co
 | childPropName       | string            | The property name where we can find array of children for particular comment|
 | isChild            | func            | Function to call to check is it a child or parent comment | bool |
 | keyExtractor        | func            | Function to call when component needs to extract comment key (comment unique id)| number (unique)|
-| parentExtractor        | func            | Function to call when component needs to extract parent comment key (comment unique id)| number (unique)|
+| parentIdExtractor        | func            | Function to call when component needs to extract parent comment key (comment unique id)| number (unique)|
 | usernameExtractor    | func            | Function to call to get the username of the comment creator | string|
 | editTimeExtractor     | func             | Function to call to get time of last comment update | Timestamp|
 | createdTimeExtractor    | func            | Function to call to get comment creation time | Timestamp|
