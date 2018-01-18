@@ -1,7 +1,7 @@
 /**
  * Created by tino on 6/6/17.
  */
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   View,
   Text,
@@ -18,21 +18,8 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
 
-export default class Comment extends Component {
-
-  constructor (props) {
-    super(props)
-    this.bookmark = null
-    this.props = props
-  }
-
-  smallImage () {
-    if (this.props.child) {
-      return {width: 30, height: 30, borderRadius: 30}
-    }
-    return {}
-  }
-
+export default class Comment extends PureComponent {
+  
   render () {
     return (
       <View style={styles.commentContainer}>
@@ -40,7 +27,7 @@ export default class Comment extends Component {
           <TouchableHighlight onPress={() => this.props.usernameTapAction(this.props.username)}>
             <View style={{alignItems: 'center'}}>
               <Image
-                style={[styles.image, this.smallImage()]}
+                style={[styles.image, {width: 30, height: 30, borderRadius: 30}]}
                 source={{uri: this.props.image}}/>
               {this.props.likes.length ? <TouchableHighlight style={[styles.actionButton, {paddingTop: 5}]}
                                                              onPress={() =>
