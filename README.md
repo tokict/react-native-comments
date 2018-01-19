@@ -25,6 +25,7 @@ Do not update comments if the user is not expecting update. Updating comments co
 
 ## ToDo
 Styling props
+
 Spinners and style improvements
 
 
