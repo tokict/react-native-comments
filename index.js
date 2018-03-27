@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   Modal,
+  Dimensions,
   ActivityIndicator,
   TextInput,
   TouchableHighlight,
@@ -19,6 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
 import Comment from './Comment'
+const screen = Dimensions.get('screen')
 
 export default class Comments extends Component {
 
@@ -115,7 +117,7 @@ export default class Comments extends Component {
       editAction={() => this.props.editAction(c)}
       editComment={() => {
         this.editCommentText = this.props.bodyExtractor(c)
-        this.editingComment = c;
+        this.editingComment = c
         this.setEditModalVisible(!this.state.editModalVisible)
 
       }
@@ -163,7 +165,7 @@ export default class Comments extends Component {
   }
 
   canUserEdit (item) {
-    if(this.props.viewingUserName == this.props.usernameExtractor(item)) {
+    if (this.props.viewingUserName == this.props.usernameExtractor(item)) {
       if (!this.props.editMinuteLimit) return true
       let created = new Date(this.props.createdTimeExtractor(item)).getTime() / 1000
       return new Date().getTime() / 1000 - created < this.props.editMinuteLimit * 60
@@ -188,8 +190,6 @@ export default class Comments extends Component {
     return null
   }
 
-
-
   render () {
     return (
       <View style={{flex: 1}}>
@@ -211,23 +211,20 @@ export default class Comments extends Component {
             <Icon style={styles.submit} name="caret-right" size={40} color="#000"/>
           </TouchableHighlight>
         </View>
-        <TouchableHighlight onPress={() => {
-          this.paginate(this.props.keyExtractor(this.state.comments[0]), 'down')
-        }}>
-          <View>
-            {this.state.loadingComments ? <ActivityIndicator
-              animating={this.state.loadingComments}
-              style={{
-                height: 20,
-                alignItems: 'center',
-                justifyContent: 'center',
+        {!this.state.loadingComments && !this.state.comments.length ?
+          <Text style={{textAlign: 'center'}}>No comments yet</Text> : null}
 
-              }}
-              size="small"
-            /> : <Text style={{textAlign: 'center'}}>Show previous</Text>}
-          </View>
-        </TouchableHighlight>
 
+
+        {!this.state.loadingComments && this.state.comments.length ? <TouchableHighlight onPress={() => {
+            this.paginate(this.props.keyExtractor(this.state.comments[0]), 'down')
+          }}>
+            <View>
+              <Text style={{textAlign: 'center'}}>Show previous</Text>
+            </View>
+
+          </TouchableHighlight>
+          : null}
         {/*Comments*/}
         {this.state.comments
           ? <FlatList style={{backgroundColor: 'white'}}
@@ -240,17 +237,19 @@ export default class Comments extends Component {
 
                           {this.generateComment(item)}
                           <View style={{marginLeft: 70}}>
-                            {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
-                              <View style={styles.repliedSection}>
-                                <Image style={styles.repliedImg}
-                                       source={{uri: this.props.imageExtractor(item.children[0])}}/>
-                                <Text style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
-                                <Text style={styles.repliedText}>replied</Text>
-                                <Text
-                                  style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
-                                  {this.props.childrenCountExtractor(item) > 1 ? ' replies' : ' reply'}</Text>
-                              </View>
-                            </TouchableHighlight> : null}
+                            {item.childrenCount ?
+                              <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
+                                <View style={styles.repliedSection}>
+                                  <Image style={styles.repliedImg}
+                                         source={{uri: this.props.imageExtractor(item.children[0])}}/>
+                                  <Text
+                                    style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
+                                  <Text style={styles.repliedText}>replied</Text>
+                                  <Text
+                                    style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
+                                    {this.props.childrenCountExtractor(item) > 1 ? ' replies' : ' reply'}</Text>
+                                </View>
+                              </TouchableHighlight> : null}
                             <Collapsible
                               easing={'easeOutCubic'}
                               duration={400}
@@ -311,25 +310,38 @@ export default class Comments extends Component {
           />
           : null}
 
-        {this.state.loadingComments ? <ActivityIndicator
-          animating={this.state.loadingComments}
-          style={{
-            height: 20,
-            alignItems: 'center',
-            justifyContent: 'center',
+        {this.state.loadingComments ? <View style={{
+          position: 'absolute',
+          zIndex: 10,
+          bottom: 0,
+          height: 60,
+          backgroundColor: 'rgba(255,255,255, 0.9)',
 
-          }}
-          size="small"
-        /> : <TouchableHighlight style={{height: 70}}
-          onPress={() => {
-            this.paginate(this.props.keyExtractor(this.state.comments[this.state.comments.length - 1]), 'up')
+        }}>
+          <ActivityIndicator
+            animating={true}
+            style={{
+              height: 50,
+              width: screen.width,
+              alignItems: 'center',
+              justifyContent: 'center',
 
-          }
-          }>
+            }}
+            size="small"
+          />
+        </View> : null}
+
+
+        {!this.state.loadingComments
+        && this.state.comments.length
+          ? <TouchableHighlight style={{height: 70}}
+                                onPress={() => {
+                                  this.paginate(this.props.keyExtractor(this.state.comments[this.state.comments.length - 1]), 'up')
+                                }}>
 
             <Text style={{textAlign: 'center'}}>Show more</Text>
 
-        </TouchableHighlight>}
+          </TouchableHighlight> : null}
 
 
         <Modal animationType={'slide'}
@@ -372,7 +384,8 @@ export default class Comments extends Component {
                 <TouchableHighlight
                   onPress={() => {
                     this.props.editAction(this.editCommentText, this.editingComment)
-                    this.setEditModalVisible(!this.state.editModalVisible)}}>
+                    this.setEditModalVisible(!this.state.editModalVisible)
+                  }}>
                   <View style={styles.editButtons}>
                     <Text>Save</Text>
                     <Icon name={'send'} size={20}/>
