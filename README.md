@@ -23,6 +23,11 @@ You should add scroll to end of comments on succesful save action
 
 Do not update comments if the user is not expecting update. Updating comments could close some modals the user was potentially viewing
 
+## ToDo
+Styling props
+
+Spinners and style improvements
+
 
 ## Properties
 
