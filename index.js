@@ -1,7 +1,7 @@
 /**
  * Created by tino on 6/6/17.
  */
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import {
   View,
   Text,
@@ -20,9 +20,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
 import Comment from './Comment'
+
 const screen = Dimensions.get('screen')
 
-export default class Comments extends Component {
+export default class Comments extends PureComponent {
 
   constructor (props) {
     super(props)
@@ -30,7 +31,6 @@ export default class Comments extends Component {
     this.props = props
     this.state = {
       loadingComments: props.data && props.data.length ? false : true,
-      comments: props.data,
       likesModalVisible: false,
       likesModalData: null,
       editModalVisible: false,
@@ -43,7 +43,16 @@ export default class Comments extends Component {
     this.editCommentText = null
     this.editingComment = null
     this.textInputs = []
+    this.renderComment = this.renderComment.bind(this)
 
+
+    this.handleReport = this.handleReport.bind(this)
+    this.handleReply = this.handleReply.bind(this)
+    this.handleLike = this.handleLike.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    this.handleUsernameTap = this.handleUsernameTap.bind(this)
+    this.handleLikesTap = this.handleLikesTap.bind(this)
+    this.handleEditAction = this.handleEditAction.bind(this)
   }
 
   setLikesModalVisible (visible) {
@@ -57,7 +66,6 @@ export default class Comments extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.data) {
       this.setState({
-        comments: nextProps.data,
         commentsLastUpdated: new Date().getTime(),
         loadingComments: false
       })
@@ -74,6 +82,7 @@ export default class Comments extends Component {
     let expanded = this.state.expanded
 
     let index = expanded.indexOf(id)
+
     if (index === -1) {
       expanded.push(id)
     } else {
@@ -81,57 +90,80 @@ export default class Comments extends Component {
       expanded.splice(index, 1)
 
     }
-
+    this.forceUpdate();
     this.setState({expanded: expanded})
 
   }
 
+  handleReport(c){
+    this.props.reportAction(c)
+  }
+  handleReply(c){
+    if (!this.props.isChild(c)) {
+      this.toggleExpand(this.props.keyExtractor(c))
+    } else {
+      let input = this.textInputs['input' + this.props.parentIdExtractor(c)]
+      input.measure((x, y, width, height, pageX, pageY) => {
+        input.focus()
+        this.props.replyAction(pageY)
+      })
+    }
+  }
+  handleLike(c){
+    this.props.likeAction(c)
+  }
+  handleEdit(c){
+    this.editCommentText = this.props.bodyExtractor(c)
+    this.editingComment = c
+    this.setEditModalVisible(!this.state.editModalVisible)
+  }
+  handleUsernameTap(username){
+    this.props.usernameTapAction(username)
+  }
+  handleLikesTap(c){
+    this.setState({likesModalData: this.props.likesExtractor(c)})
+    this.setLikesModalVisible(!this.state.likesModalVisible)
+  }
+
+  handleEditAction(c){
+    this.props.editAction(this.editCommentText, c)
+  }
+
+
+
+
+  /**
+   *
+   * Generates a single comment
+   * */
   generateComment (c) {
     return <Comment
+      data={c}
       id={this.props.keyExtractor(c)}
-      usernameTapAction={(username) => this.props.usernameTapAction(username)}
+      usernameTapAction={this.handleUsernameTap}
       username={this.props.usernameExtractor(c)}
       body={this.props.bodyExtractor(c)}
-      likes={this.props.likesExtractor(c)}
+      likesNr={this.props.likesExtractor(c).length}
       canEdit={this.canUserEdit(c)}
       updatedAt={this.props.editTimeExtractor(c)}
-      replyAction={() => {
-        if (!this.props.isChild(c)) {
-          this.toggleExpand(this.props.keyExtractor(c))
-        } else {
-          let input = this.textInputs['input' + this.props.parentIdExtractor(c)]
-          input.measure((x, y, width, height, pageX, pageY) => {
-            input.focus()
-            this.props.replyAction(pageY)
-          })
-        }
-      }
-
-      }
+      replyAction={this.handleReply}
       image={this.props.imageExtractor(c)}
       child={true}
-      reportAction={() => this.props.reportAction(c)}
+      reportAction={this.handleReport}
       liked={this.props.likeExtractor(c)}
       reported={this.props.reportedExtractor(c)}
-      likeAction={() => this.props.likeAction(c)}
-      editAction={() => this.props.editAction(c)}
-      editComment={() => {
-        this.editCommentText = this.props.bodyExtractor(c)
-        this.editingComment = c
-        this.setEditModalVisible(!this.state.editModalVisible)
-
-      }
-      }
-      likesTapAction={() => {
-        this.setState({likesModalData: this.props.likesExtractor(c)})
-        this.setLikesModalVisible(!this.state.likesModalVisible)
-      }}
+      likeAction={this.handleLike}
+      editAction={this.handleEditAction}
+      editComment={this.handleEdit}
+      likesTapAction={this.handleLikesTap}
     />
   }
 
-  /*Create comment instance and return*/
+  /**
+   * Renders comments children
+   * */
   renderChildren (items) {
-    if (!items.length) return
+    if (!items || !items.length) return
     let self = this
     return items.map(function (c) {
 
@@ -145,12 +177,18 @@ export default class Comments extends Component {
 
   }
 
+  /**
+   * Returns last child id
+   * */
   getLastChildCommentId (item) {
     if (!item) return
     const items = item[this.props.childPropName]
     return this.props.keyExtractor(items[items.length - 1])
   }
 
+  /**
+   * Returns first child id
+   * */
   getFirstChildCommentId (item) {
     if (!item) return
     const items = item[this.props.childPropName]
@@ -158,12 +196,18 @@ export default class Comments extends Component {
     return this.props.keyExtractor(items[0])
   }
 
+  /**
+   * Does a pagination action
+   * */
   paginate (fromCommentId, direction, parentCommentId) {
     this.setState({loadingComments: true})
     this.props.paginateAction(fromCommentId, direction, parentCommentId)
 
   }
 
+  /**
+   * Can user edit a comment
+   * */
   canUserEdit (item) {
     if (this.props.viewingUserName == this.props.usernameExtractor(item)) {
       if (!this.props.editMinuteLimit) return true
@@ -173,6 +217,9 @@ export default class Comments extends Component {
     return false
   }
 
+  /**
+   * Renders a modal with all comment likes
+   * */
   renderLikesModal () {
     if (this.state.likesModalData) {
 
@@ -188,6 +235,81 @@ export default class Comments extends Component {
       </TouchableHighlight>)
     }
     return null
+  }
+
+  /**
+   * Renders a comment with pagination
+   * */
+  renderComment (c) {
+
+    const item = c.item
+    return <View>
+      {this.generateComment(item)}
+      <View style={{marginLeft: 70}}>
+        {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
+          <View style={styles.repliedSection}>
+            <Image style={styles.repliedImg}
+                   source={{uri: this.props.imageExtractor(item.children[0])}}/>
+            <Text
+              style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
+            <Text style={styles.repliedText}>replied</Text>
+            <Text
+              style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
+              {this.props.childrenCountExtractor(item) > 1 ? ' replies' : ' reply'}</Text>
+          </View>
+        </TouchableHighlight> : null}
+        <Collapsible
+          easing={'easeOutCubic'}
+          duration={400}
+          collapsed={!this.isExpanded(this.props.keyExtractor(item))}>
+          {this.props.childrenCountExtractor(item) ? <View>
+              {this.props.childrenCountExtractor(item) > item[this.props.childPropName].length
+                ? <TouchableHighlight
+                  onPress={() =>
+                    this.paginate(this.getFirstChildCommentId(item), 'down',
+                      this.props.keyExtractor(item))
+                  }>
+                  <Text style={{textAlign: 'center', paddingTop: 15}}>Show
+                    previous...</Text>
+                </TouchableHighlight>
+                : null}
+
+              {this.renderChildren(item[this.props.childPropName], this.props.keyExtractor(item))}
+
+              {this.props.childrenCountExtractor(item) > item[this.props.childPropName].length
+                ? <TouchableHighlight
+                  onPress={() => this.paginate(this.getLastChildCommentId(item), 'up',
+                    this.props.keyExtractor(item))}>
+                  <Text style={{textAlign: 'center', paddingTop: 15}}>Show
+                    more...</Text>
+                </TouchableHighlight>
+                : null}</View>
+            : null}
+          <View style={styles.inputSection}>
+            <TextInput
+              ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
+              style={styles.input}
+              multiline={true}
+              onChangeText={(text => this.replyCommentText = text)}
+              placeholder={'Write comment'}
+              numberOfLines={3}
+            />
+            <TouchableHighlight onPress={() => {
+              this.props.saveAction(
+                this.replyCommentText, this.props.keyExtractor(item))
+              this.replyCommentText = null
+              this.textInputs['input' + this.props.keyExtractor(item)].clear()
+            }
+            }>
+              <Icon style={styles.submit} name="caret-right" size={40}
+                    color="#000"/>
+            </TouchableHighlight>
+          </View>
+        </Collapsible>
+      </View>
+
+
+    </View>
   }
 
   render () {
@@ -211,13 +333,12 @@ export default class Comments extends Component {
             <Icon style={styles.submit} name="caret-right" size={40} color="#000"/>
           </TouchableHighlight>
         </View>
-        {!this.state.loadingComments && !this.state.comments.length ?
+        {!this.state.loadingComments && !this.props.data ?
           <Text style={{textAlign: 'center'}}>No comments yet</Text> : null}
 
 
-
-        {!this.state.loadingComments && this.state.comments.length ? <TouchableHighlight onPress={() => {
-            this.paginate(this.props.keyExtractor(this.state.comments[0]), 'down')
+        {!this.state.loadingComments && this.props.data ? <TouchableHighlight onPress={() => {
+            this.paginate(this.props.keyExtractor(this.props.data[0]), 'down')
           }}>
             <View>
               <Text style={{textAlign: 'center'}}>Show previous</Text>
@@ -226,88 +347,13 @@ export default class Comments extends Component {
           </TouchableHighlight>
           : null}
         {/*Comments*/}
-        {this.state.comments
+        {this.props.data
           ? <FlatList style={{backgroundColor: 'white'}}
-                      data={this.state.comments}
+                      data={this.props.data}
                       extraData={this.state.commentsLastUpdated}
                       initialNumToRender={this.props.initialDisplayCount}
                       keyExtractor={item => this.props.keyExtractor(item)}
-                      renderItem={({item}) => {
-                        return <View>
-
-                          {this.generateComment(item)}
-                          <View style={{marginLeft: 70}}>
-                            {item.childrenCount ?
-                              <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
-                                <View style={styles.repliedSection}>
-                                  <Image style={styles.repliedImg}
-                                         source={{uri: this.props.imageExtractor(item.children[0])}}/>
-                                  <Text
-                                    style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
-                                  <Text style={styles.repliedText}>replied</Text>
-                                  <Text
-                                    style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
-                                    {this.props.childrenCountExtractor(item) > 1 ? ' replies' : ' reply'}</Text>
-                                </View>
-                              </TouchableHighlight> : null}
-                            <Collapsible
-                              easing={'easeOutCubic'}
-                              duration={400}
-                              collapsed={!this.isExpanded(this.props.keyExtractor(item))}>
-                              {this.props.childrenCountExtractor(item) ? <View>
-                                  {this.props.childrenCountExtractor(item) > item[this.props.childPropName].length
-                                    ? <TouchableHighlight
-                                      onPress={() =>
-                                        this.paginate(this.getFirstChildCommentId(item), 'down',
-                                          this.props.keyExtractor(item))
-                                      }>
-                                      <Text style={{textAlign: 'center', paddingTop: 15}}>Show
-                                        previous...</Text>
-                                    </TouchableHighlight>
-                                    : null}
-
-                                  {this.renderChildren(item[this.props.childPropName], this.props.keyExtractor(item))}
-
-                                  {this.props.childrenCountExtractor(item) > item[this.props.childPropName].length
-                                    ? <TouchableHighlight
-                                      onPress={() => this.paginate(this.getLastChildCommentId(item), 'up',
-                                        this.props.keyExtractor(item))}>
-                                      <Text style={{textAlign: 'center', paddingTop: 15}}>Show
-                                        more...</Text>
-                                    </TouchableHighlight>
-                                    : null}</View>
-                                : null}
-                              <View style={styles.inputSection}>
-                                <TextInput
-                                  ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
-                                  style={styles.input}
-                                  multiline={true}
-                                  onChangeText={(text => this.replyCommentText = text)}
-                                  placeholder={'Write comment'}
-                                  numberOfLines={3}
-                                />
-                                <TouchableHighlight onPress={() => {
-                                  this.props.saveAction(
-                                    this.replyCommentText, this.props.keyExtractor(item))
-                                  this.replyCommentText = null
-                                  this.textInputs['input' + this.props.keyExtractor(item)].clear()
-                                }
-                                }>
-                                  <Icon style={styles.submit} name="caret-right" size={40}
-                                        color="#000"/>
-                                </TouchableHighlight>
-                              </View>
-                            </Collapsible>
-                          </View>
-
-
-                        </View>
-                      }
-
-                      }
-
-
-          />
+                      renderItem={this.renderComment}/>
           : null}
 
         {this.state.loadingComments ? <View style={{
@@ -333,10 +379,10 @@ export default class Comments extends Component {
 
 
         {!this.state.loadingComments
-        && this.state.comments.length
+        && this.props.data
           ? <TouchableHighlight style={{height: 70}}
                                 onPress={() => {
-                                  this.paginate(this.props.keyExtractor(this.state.comments[this.state.comments.length - 1]), 'up')
+                                  this.paginate(this.props.keyExtractor(this.props.data[this.props.data.length - 1]), 'up')
                                 }}>
 
             <Text style={{textAlign: 'center'}}>Show more</Text>

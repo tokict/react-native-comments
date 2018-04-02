@@ -17,24 +17,62 @@ import TimeAgo from 'react-native-timeago'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
 import Collapsible from 'react-native-collapsible'
+import * as commentActions from './ExampleActions'
 
 export default class Comment extends PureComponent {
-  
+
+  constructor (props) {
+    super(props)
+
+    this.handleReport = this.handleReport.bind(this)
+    this.handleReply = this.handleReply.bind(this)
+    this.handleLike = this.handleLike.bind(this)
+    this.handleEdit = this.handleEdit.bind(this)
+    this.handleUsernameTap = this.handleUsernameTap.bind(this)
+    this.handleLikesTap = this.handleLikesTap.bind(this)
+  }
+
+  handleReport(){
+    this.props.reportAction(this.props.data)
+  }
+  handleReply(){
+    this.props.replyAction(this.props.data)
+  }
+  handleLike(){
+    this.props.likeAction(this.props.data)
+  }
+  handleEdit(){
+    this.props.editComment(this.props.data)
+  }
+  handleUsernameTap(){
+    this.props.usernameTapAction(this.props.username)
+  }
+  handleLikesTap(){
+    this.props.likesTapAction(this.props.data)
+  }
+
+  componentWillReceiveProps(nextProps){
+    for (const index in nextProps) {
+      if (nextProps[index] !== this.props[index]) {
+        console.log(index, this.props[index], '-->', nextProps[index]);
+      }
+    }
+  }
+
   render () {
     return (
       <View style={styles.commentContainer}>
         <View style={styles.left}>
-          <TouchableHighlight onPress={() => this.props.usernameTapAction(this.props.username)}>
+          <TouchableHighlight onPress={this.handleUsernameTap}>
             <View style={{alignItems: 'center'}}>
               <Image
                 style={[styles.image, {width: 30, height: 30, borderRadius: 30}]}
                 source={{uri: this.props.image}}/>
-              {this.props.likes.length ? <TouchableHighlight style={[styles.actionButton, {paddingTop: 5}]}
-                                                             onPress={() =>
-                                                               this.props.likesTapAction()}>
+              {this.props.likesNr ? <TouchableHighlight style={[styles.actionButton, {paddingTop: 5}]}
+                                                        onPress={ this.handleLikesTap}>
                 <View style={{flexDirection: 'row'}}>
                   <Icon name={'heart'} color={'#df1740'} size={15}/>
-                  <Text style={styles.likeNr}> {this.props.likes.length}</Text>
+                  <Text style={styles.likeNr}> {this.props.likesNr}</Text>
                 </View>
               </TouchableHighlight> : null}
             </View>
@@ -43,31 +81,31 @@ export default class Comment extends PureComponent {
         <View style={styles.right}>
           <View style={styles.rightContent}>
             <View style={styles.rightContentTop}>
-              <TouchableHighlight onPress={() => this.props.usernameTapAction(this.props.username)}>
+              <TouchableHighlight onPress={this.handleUsernameTap}>
                 <Text style={styles.name}>{this.props.username}</Text>
               </TouchableHighlight>
 
-              {this.props.canEdit?<TouchableHighlight
+              {this.props.canEdit ? <TouchableHighlight
                 style={styles.editIcon}
-                onPress={() => this.props.editComment()}>
+                onPress={this.handleEdit}>
                 <Icon name={'edit'} size={15}/>
-              </TouchableHighlight>:null}
+              </TouchableHighlight> : null}
             </View>
             <Text style={styles.body}>{this.props.body}</Text>
           </View>
           <View style={styles.rightActionBar}>
             <TimeAgo style={styles.time} time={this.props.updatedAt}/>
             <TouchableHighlight style={styles.actionButton}
-                                onPress={() => this.props.likeAction()}>
+                                onPress={this.handleLike }>
               <View style={{flexDirection: 'row'}}>
                 <Text style={[styles.actionText, {color: this.props.liked ? '#4DB2DF' : null}]}>Like </Text>
 
               </View>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.actionButton} onPress={() => this.props.replyAction()}>
+            <TouchableHighlight style={styles.actionButton} onPress={this.handleReply}>
               <Text style={styles.actionText}>Reply</Text>
             </TouchableHighlight>
-            <TouchableHighlight style={styles.actionButton} onPress={() => this.props.reportAction()}>
+            <TouchableHighlight style={styles.actionButton} onPress={this.handleReport}>
               {this.props.reported ? <Text style={{fontStyle: 'italic', fontSize: 11,}}>Reported</Text>
                 : <Text style={styles.actionText}>Report</Text>}
             </TouchableHighlight>
@@ -79,6 +117,7 @@ export default class Comment extends PureComponent {
 }
 
 Comment.propTypes = {
+  data: PropTypes.array,
   body: PropTypes.string,
   canEdit: PropTypes.bool,
   child: PropTypes.bool,
@@ -86,7 +125,7 @@ Comment.propTypes = {
   image: PropTypes.string,
   likeAction: PropTypes.func,
   liked: PropTypes.bool,
-  likes: PropTypes.array,
+  likesNr: PropTypes.int,
   likesTapAction: PropTypes.func,
   replyAction: PropTypes.func,
   reportAction: PropTypes.func,
