@@ -117,7 +117,7 @@ export default class Comment extends PureComponent {
 }
 
 Comment.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.object,
   body: PropTypes.string,
   canEdit: PropTypes.bool,
   child: PropTypes.bool,
