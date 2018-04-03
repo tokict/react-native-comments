@@ -51,14 +51,6 @@ export default class Comment extends PureComponent {
     this.props.likesTapAction(this.props.data)
   }
 
-  componentWillReceiveProps(nextProps){
-    for (const index in nextProps) {
-      if (nextProps[index] !== this.props[index]) {
-        console.log(index, this.props[index], '-->', nextProps[index]);
-      }
-    }
-  }
-
   render () {
     return (
       <View style={styles.commentContainer}>
@@ -66,7 +58,7 @@ export default class Comment extends PureComponent {
           <TouchableHighlight onPress={this.handleUsernameTap}>
             <View style={{alignItems: 'center'}}>
               <Image
-                style={[styles.image, {width: 30, height: 30, borderRadius: 30}]}
+                style={[styles.image, {width: 30, height: 30, borderRadius: 15}]}
                 source={{uri: this.props.image}}/>
               {this.props.likesNr ? <TouchableHighlight style={[styles.actionButton, {paddingTop: 5}]}
                                                         onPress={ this.handleLikesTap}>

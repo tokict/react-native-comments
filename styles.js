@@ -113,9 +113,9 @@ module.exports = StyleSheet.create({
 
   },
   likeImage: {
-    width: 40,
-    height: 400,
-    borderRadius: 20
+    width: 30,
+    height: 30,
+    borderRadius: 15
   },
   likename: {
     fontWeight: 'bold',

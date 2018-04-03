@@ -7,7 +7,6 @@ import {
   Text,
   Image,
   FlatList,
-  KeyboardAvoidingView,
   Modal,
   Dimensions,
   ActivityIndicator,
@@ -282,28 +281,26 @@ export default class Comments extends PureComponent {
                 </TouchableHighlight>
                 : null}</View>
             : null}
-          <KeyboardAvoidingView behavior={"padding"}>
-            <View style={styles.inputSection} >
-              <TextInput
-                ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
-                style={styles.input}
-                multiline={true}
-                onChangeText={(text => this.replyCommentText = text)}
-                placeholder={'Write comment'}
-                numberOfLines={3}
-              />
-              <TouchableHighlight onPress={() => {
-                this.props.saveAction(
-                  this.replyCommentText, this.props.keyExtractor(item))
-                this.replyCommentText = null
-                this.textInputs['input' + this.props.keyExtractor(item)].clear()
-              }
-              }>
-                <Icon style={styles.submit} name="caret-right" size={40}
-                      color="#000"/>
-              </TouchableHighlight>
-            </View>
-          </KeyboardAvoidingView>
+          <View style={styles.inputSection}>
+            <TextInput
+              ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
+              style={styles.input}
+              multiline={true}
+              onChangeText={(text => this.replyCommentText = text)}
+              placeholder={'Write comment'}
+              numberOfLines={3}
+            />
+            <TouchableHighlight onPress={() => {
+              this.props.saveAction(
+                this.replyCommentText, this.props.keyExtractor(item))
+              this.replyCommentText = null
+              this.textInputs['input' + this.props.keyExtractor(item)].clear()
+            }
+            }>
+              <Icon style={styles.submit} name="caret-right" size={40}
+                    color="#000"/>
+            </TouchableHighlight>
+          </View>
         </Collapsible>
       </View>
 
