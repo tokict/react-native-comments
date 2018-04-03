@@ -125,7 +125,7 @@ Comment.propTypes = {
   image: PropTypes.string,
   likeAction: PropTypes.func,
   liked: PropTypes.bool,
-  likesNr: PropTypes.int,
+  likesNr: PropTypes.number,
   likesTapAction: PropTypes.func,
   replyAction: PropTypes.func,
   reportAction: PropTypes.func,
