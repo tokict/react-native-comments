@@ -401,7 +401,7 @@ export default class Comments extends PureComponent {
                                 alignSelf: "flex-end",
                                 top: 10
                               }}>
-            <View style={{position: 'relative', left: 30}}>
+            <View style={{position: 'relative', left: 50, top: 10}}>
               <Icon name={'times'} size={40}/>
             </View>
           </TouchableHighlight>

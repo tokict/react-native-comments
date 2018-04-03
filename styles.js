@@ -11,7 +11,7 @@ module.exports = StyleSheet.create({
   image: {
     height: 40,
     width: 40,
-    borderRadius: 40
+    borderRadius: 20
   },
   right: {
     flex: 1,
@@ -59,7 +59,7 @@ module.exports = StyleSheet.create({
   repliedImg: {
     height: 20,
     width: 20,
-    borderRadius: 20
+    borderRadius: 10
   },
   repliedUsername: {
     color: '#9B9B9B',
@@ -114,7 +114,7 @@ module.exports = StyleSheet.create({
   likeImage: {
     width: 50,
     height: 50,
-    borderRadius: 50
+    borderRadius: 25
   },
   likename: {
     fontWeight: 'bold',
