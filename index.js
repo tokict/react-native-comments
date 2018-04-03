@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   FlatList,
+  KeyboardAvoidingView,
   Modal,
   Dimensions,
   ActivityIndicator,
@@ -241,16 +242,16 @@ export default class Comments extends PureComponent {
     const item = c.item
     return <View>
       {this.generateComment(item)}
-      <View style={{marginLeft: 70}}>
+      <View style={{marginLeft: 40}}>
         {item.childrenCount ? <TouchableHighlight onPress={() => this.toggleExpand(this.props.keyExtractor(item))}>
           <View style={styles.repliedSection}>
             <Image style={styles.repliedImg}
-                   source={{uri: this.props.imageExtractor(item.children[0])}}/>
+                   source={{uri: this.props.imageExtractor(item[this.props.childPropName][0])}}/>
             <Text
-              style={styles.repliedUsername}>{this.props.usernameExtractor(item.children[0])}</Text>
+              style={styles.repliedUsername}> {this.props.usernameExtractor(item[this.props.childPropName][0])} </Text>
             <Text style={styles.repliedText}>replied</Text>
             <Text
-              style={styles.repliedCount}>* {this.props.childrenCountExtractor(item)}
+              style={styles.repliedCount}> * {this.props.childrenCountExtractor(item)}
               {this.props.childrenCountExtractor(item) > 1 ? ' replies' : ' reply'}</Text>
           </View>
         </TouchableHighlight> : null}
@@ -281,26 +282,28 @@ export default class Comments extends PureComponent {
                 </TouchableHighlight>
                 : null}</View>
             : null}
-          <View style={styles.inputSection}>
-            <TextInput
-              ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
-              style={styles.input}
-              multiline={true}
-              onChangeText={(text => this.replyCommentText = text)}
-              placeholder={'Write comment'}
-              numberOfLines={3}
-            />
-            <TouchableHighlight onPress={() => {
-              this.props.saveAction(
-                this.replyCommentText, this.props.keyExtractor(item))
-              this.replyCommentText = null
-              this.textInputs['input' + this.props.keyExtractor(item)].clear()
-            }
-            }>
-              <Icon style={styles.submit} name="caret-right" size={40}
-                    color="#000"/>
-            </TouchableHighlight>
-          </View>
+          <KeyboardAvoidingView behavior={"padding"}>
+            <View style={styles.inputSection} >
+              <TextInput
+                ref={(input) => this.textInputs['input' + this.props.keyExtractor(item)] = input}
+                style={styles.input}
+                multiline={true}
+                onChangeText={(text => this.replyCommentText = text)}
+                placeholder={'Write comment'}
+                numberOfLines={3}
+              />
+              <TouchableHighlight onPress={() => {
+                this.props.saveAction(
+                  this.replyCommentText, this.props.keyExtractor(item))
+                this.replyCommentText = null
+                this.textInputs['input' + this.props.keyExtractor(item)].clear()
+              }
+              }>
+                <Icon style={styles.submit} name="caret-right" size={40}
+                      color="#000"/>
+              </TouchableHighlight>
+            </View>
+          </KeyboardAvoidingView>
         </Collapsible>
       </View>
 

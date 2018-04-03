@@ -2,20 +2,20 @@ import { StyleSheet, PixelRatio } from 'react-native'
 
 module.exports = StyleSheet.create({
   commentContainer: {
-    padding: 5,
+    paddingRight: 5,
+    marginBottom: 10,
     flexDirection: 'row'
   },
   left: {
     padding: 5
   },
   image: {
-    height: 40,
-    width: 40,
-    borderRadius: 20
+    height: 30,
+    width: 30,
+    borderRadius: 15
   },
   right: {
     flex: 1,
-    padding: 5
   },
   rightContent: {
     borderRadius: 10,
@@ -52,7 +52,9 @@ module.exports = StyleSheet.create({
     fontWeight: 'bold'
   },
   repliedSection: {
-    width: 180,
+    paddingTop: 15,
+    paddingBottom: 20,
+    width: 150,
     justifyContent: 'space-between',
     flexDirection: 'row'
   },
@@ -62,15 +64,14 @@ module.exports = StyleSheet.create({
     borderRadius: 10
   },
   repliedUsername: {
-    color: '#9B9B9B',
-    fontWeight: 'bold'
+    color: '#9B9B9B'
   },
   repliedText: {
     color: '#9B9B9B',
   },
   repliedCount: {
     color: '#9B9B9B',
-    fontSize: 12
+    fontSize: 11
   },
   inputSection: {
     flexDirection: 'row',
@@ -112,9 +113,9 @@ module.exports = StyleSheet.create({
 
   },
   likeImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25
+    width: 40,
+    height: 400,
+    borderRadius: 20
   },
   likename: {
     fontWeight: 'bold',
