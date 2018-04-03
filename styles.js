@@ -94,6 +94,7 @@ module.exports = StyleSheet.create({
   likeHeader: {
     textAlign: 'center',
     padding: 10,
+    marginTop: 30,
     fontWeight: 'bold'
 
   },
