@@ -10,6 +10,7 @@ import {
   Modal,
   Dimensions,
   ActivityIndicator,
+  Keyboard,
   TextInput,
   TouchableHighlight,
   TouchableOpacity
@@ -350,6 +351,7 @@ export default class Comments extends PureComponent {
                   this.textInputs[
                     "input" + this.props.keyExtractor(item)
                   ].clear();
+                  Keyboard.dismiss();
                 }}
               >
                 <Icon
@@ -383,6 +385,7 @@ export default class Comments extends PureComponent {
               this.props.saveAction(this.newCommentText, false);
               this.newCommentText = null;
               this.textInputs["inputMain"].clear();
+              Keyboard.dismiss();
             }}
           >
             <Icon
@@ -414,6 +417,7 @@ export default class Comments extends PureComponent {
         {/*Comments*/}
         {this.props.data ? (
           <FlatList
+            keyboardShouldPersistTaps="always"
             style={{ backgroundColor: "white" }}
             data={this.props.data}
             extraData={this.state.commentsLastUpdated}
