@@ -1,5 +1,15 @@
 
 
+## Due to the recent possesion of Github by the devil, this repo has been migrated abandoned and rehosted at https://gitlab.com/tokict/react-native-comments
+
+
+
+
+
+
+
+
+
 # React native comments
 ![Screenshot](https://tinotokic.com/img/react-native-comments.gif)
 
