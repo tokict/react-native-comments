@@ -1,6 +1,6 @@
 
 
-## Due to the recent possesion of Github by the devil, this repo has been migrated abandoned and rehosted at https://gitlab.com/tokict/react-native-comments
+## Due to the recent possesion of Github by the devil, this repo has been abandoned and rehosted at https://gitlab.com/tokict/react-native-comments
 
 
 
