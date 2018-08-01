@@ -16,7 +16,11 @@
   "deprecated": false,
   "description": "Complete view component for rendering comments in RN",
   "homepage": "https://github.com/tokict/react-native-comments#readme",
-  "keywords": ["react-native", "react-native-comments", "comments"],
+  "keywords": [
+    "react-native",
+    "react-native-comments",
+    "comments"
+  ],
   "license": "MIT",
   "main": "index.js",
   "name": "react-native-comments",
@@ -27,5 +31,5 @@
     "type": "git",
     "url": "git+https://github.com/tokict/react-native-comments.git"
   },
-  "version": "1.0.22"
+  "version": "1.1.0"
 }
