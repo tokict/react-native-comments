@@ -49,6 +49,7 @@ export default class Comments extends PureComponent {
     this.handleReply = this.handleReply.bind(this);
     this.handleLike = this.handleLike.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleUsernameTap = this.handleUsernameTap.bind(this);
     this.handleLikesTap = this.handleLikesTap.bind(this);
     this.handleEditAction = this.handleEditAction.bind(this);
@@ -110,6 +111,7 @@ export default class Comments extends PureComponent {
   }
 
   handleReply(c) {
+    if (!this.props.isChild) return;
     if (!this.props.isChild(c)) {
       this.toggleExpand(c, true);
     } else {
@@ -121,6 +123,10 @@ export default class Comments extends PureComponent {
     this.props.likeAction(c);
   }
 
+  handleDelete(c) {
+    this.props.deleteAction(c);
+  }
+
   handleEdit(c) {
     this.editCommentText = this.props.bodyExtractor(c);
     this.editingComment = c;
@@ -128,7 +134,9 @@ export default class Comments extends PureComponent {
   }
 
   handleUsernameTap(username) {
-    this.props.usernameTapAction(username);
+    if (this.props.usernameTapAction) {
+      this.props.usernameTapAction(username);
+    }
   }
 
   handleLikesTap(c) {
@@ -155,16 +163,19 @@ export default class Comments extends PureComponent {
         likesNr={this.props.likesExtractor(c).length}
         canEdit={this.canUserEdit(c)}
         updatedAt={this.props.editTimeExtractor(c)}
-        replyAction={this.handleReply}
+        replyAction={this.props.replyAction ? this.handleReply : null}
         image={this.props.imageExtractor(c)}
         child={true}
-        reportAction={this.handleReport}
-        liked={this.props.likeExtractor(c)}
-        reported={this.props.reportedExtractor(c)}
-        likeAction={this.handleLike}
+        reportAction={this.props.reportAction ? this.handleReport : null}
+        liked={this.props.likeExtractor ? this.props.likeExtractor(c) : null}
+        reported={
+          this.props.reportedExtractor ? this.props.reportedExtractor(c) : null
+        }
+        likeAction={this.props.likeAction ? this.handleLike : null}
         editAction={this.handleEditAction}
+        deleteAction={this.handleDelete}
         editComment={this.handleEdit}
-        likesTapAction={this.handleLikesTap}
+        likesTapAction={this.props.likeAction ? this.handleLikesTap : null}
       />
     );
   }
@@ -234,7 +245,7 @@ export default class Comments extends PureComponent {
           this.setLikesModalVisible(false), like.tap(like.name);
         }}
         style={styles.likeButton}
-        key={like.user_id}
+        key={like.user_id + ""}
       >
         <View style={[styles.likeContainer]}>
           <Image style={[styles.likeImage]} source={{ uri: like.image }} />
@@ -253,7 +264,7 @@ export default class Comments extends PureComponent {
       <View>
         {this.generateComment(item)}
         <View style={{ marginLeft: 40 }}>
-          {item.childrenCount ? (
+          {item.childrenCount && this.props.childPropName ? (
             <TouchableHighlight onPress={() => this.toggleExpand(item)}>
               <View style={styles.repliedSection}>
                 <Image
@@ -286,10 +297,12 @@ export default class Comments extends PureComponent {
             duration={400}
             collapsed={!this.isExpanded(this.props.keyExtractor(item))}
           >
-            {this.props.childrenCountExtractor(item) ? (
+            {this.props.childrenCountExtractor(item) &&
+            this.props.paginateAction ? (
               <View>
-                {this.props.childrenCountExtractor(item) >
-                item[this.props.childPropName].length ? (
+                {this.props.childPropName &&
+                this.props.childrenCountExtractor(item) >
+                  item[this.props.childPropName].length ? (
                   <TouchableHighlight
                     onPress={() =>
                       this.paginate(
@@ -311,7 +324,8 @@ export default class Comments extends PureComponent {
                 )}
 
                 {this.props.childrenCountExtractor(item) >
-                item[this.props.childPropName].length ? (
+                  item[this.props.childPropName].length &&
+                this.props.paginateAction ? (
                   <TouchableHighlight
                     onPress={() =>
                       this.paginate(
@@ -400,7 +414,9 @@ export default class Comments extends PureComponent {
           <Text style={{ textAlign: "center" }}>No comments yet</Text>
         ) : null}
 
-        {!this.state.loadingComments && this.props.data ? (
+        {!this.state.loadingComments &&
+        this.props.data &&
+        this.props.paginateAction ? (
           <TouchableHighlight
             onPress={() => {
               this.paginate(
@@ -421,8 +437,8 @@ export default class Comments extends PureComponent {
             style={{ backgroundColor: "white" }}
             data={this.props.data}
             extraData={this.state.commentsLastUpdated}
-            initialNumToRender={this.props.initialDisplayCount}
-            keyExtractor={item => this.props.keyExtractor(item)}
+            initialNumToRender={this.props.initialDisplayCount || 999}
+            keyExtractor={item => this.props.keyExtractor(item) + ""}
             renderItem={this.renderComment}
           />
         ) : null}
@@ -450,7 +466,9 @@ export default class Comments extends PureComponent {
           </View>
         ) : null}
 
-        {!this.state.loadingComments && this.props.data ? (
+        {!this.state.loadingComments &&
+        this.props.data &&
+        this.props.paginateAction ? (
           <TouchableHighlight
             style={{ height: 70 }}
             onPress={() => {
@@ -492,7 +510,7 @@ export default class Comments extends PureComponent {
           {this.state.likesModalVisible ? (
             <FlatList
               initialNumToRender="10"
-              keyExtractor={item => item.like_id}
+              keyExtractor={item => item.like_id + ""}
               data={this.state.likesModalData}
               renderItem={this.renderLike}
             />
@@ -561,24 +579,25 @@ Comments.propTypes = {
   viewingUserName: PropTypes.string,
   initialDisplayCount: PropTypes.number,
   editMinuteLimit: PropTypes.number,
-  usernameTapAction: PropTypes.func.isRequired,
-  childPropName: PropTypes.string.isRequired,
-  isChild: PropTypes.func.isRequired,
+  usernameTapAction: PropTypes.func,
+  childPropName: PropTypes.string,
+  isChild: PropTypes.func,
   keyExtractor: PropTypes.func.isRequired,
-  parentIdExtractor: PropTypes.func.isRequired,
+  parentIdExtractor: PropTypes.func,
   usernameExtractor: PropTypes.func.isRequired,
   editTimeExtractor: PropTypes.func.isRequired,
   createdTimeExtractor: PropTypes.func.isRequired,
   bodyExtractor: PropTypes.func.isRequired,
   imageExtractor: PropTypes.func.isRequired,
-  likeExtractor: PropTypes.func.isRequired,
-  reportedExtractor: PropTypes.func.isRequired,
-  likesExtractor: PropTypes.func.isRequired,
-  childrenCountExtractor: PropTypes.func.isRequired,
-  replyAction: PropTypes.func.isRequired,
+  likeExtractor: PropTypes.func,
+  reportedExtractor: PropTypes.func,
+  likesExtractor: PropTypes.func,
+  childrenCountExtractor: PropTypes.func,
+  replyAction: PropTypes.func,
   saveAction: PropTypes.func.isRequired,
+  deleteAction: PropTypes.func,
   editAction: PropTypes.func.isRequired,
-  reportAction: PropTypes.func.isRequired,
-  likeAction: PropTypes.func.isRequired,
-  paginateAction: PropTypes.func.isRequired
+  reportAction: PropTypes.func,
+  likeAction: PropTypes.func,
+  paginateAction: PropTypes.func
 };

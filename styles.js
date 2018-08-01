@@ -1,10 +1,10 @@
-import { StyleSheet, PixelRatio } from 'react-native'
+import { StyleSheet, PixelRatio } from "react-native";
 
 module.exports = StyleSheet.create({
   commentContainer: {
     paddingRight: 5,
     marginBottom: 10,
-    flexDirection: 'row'
+    flexDirection: "row"
   },
   left: {
     padding: 5
@@ -15,48 +15,48 @@ module.exports = StyleSheet.create({
     borderRadius: 15
   },
   right: {
-    flex: 1,
+    flex: 1
   },
   rightContent: {
     borderRadius: 10,
     padding: 5,
-    backgroundColor: '#f1f3f6'
+    backgroundColor: "#f1f3f6"
   },
   rightContentTop: {
-    flexDirection: 'row'
+    flexDirection: "row"
   },
 
   name: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingBottom: 5
   },
   editIcon: {
     flex: 1,
-    alignItems: 'flex-end',
+    alignItems: "flex-end"
   },
   body: {
     paddingBottom: 10
   },
   rightActionBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   time: {
     fontSize: 12,
     paddingLeft: 5,
-    color: '#9B9B9B',
-    fontStyle: 'italic'
+    color: "#9B9B9B",
+    fontStyle: "italic"
   },
   actionText: {
-    color: '#9B9B9B',
-    fontWeight: 'bold'
+    color: "#9B9B9B",
+    fontWeight: "bold"
   },
   repliedSection: {
     paddingTop: 15,
     paddingBottom: 20,
     width: 150,
-    justifyContent: 'space-between',
-    flexDirection: 'row'
+    justifyContent: "space-between",
+    flexDirection: "row"
   },
   repliedImg: {
     height: 20,
@@ -64,53 +64,50 @@ module.exports = StyleSheet.create({
     borderRadius: 10
   },
   repliedUsername: {
-    color: '#9B9B9B'
+    color: "#9B9B9B"
   },
   repliedText: {
-    color: '#9B9B9B',
+    color: "#9B9B9B"
   },
   repliedCount: {
-    color: '#9B9B9B',
+    color: "#9B9B9B",
     fontSize: 11
   },
   inputSection: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff"
   },
   submit: {
-    padding: 10,
+    padding: 10
   },
   input: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
-    color: '#424242',
+    backgroundColor: "#fff",
+    color: "#424242"
   },
   likeNr: {
-    fontWeight: 'normal',
+    fontWeight: "normal",
     fontSize: 12
   },
   likeHeader: {
-    textAlign: 'center',
+    textAlign: "center",
     padding: 10,
     marginTop: 30,
-    fontWeight: 'bold'
-
+    fontWeight: "bold"
   },
   likeButton: {
     margin: 10,
-    alignItems: 'center',
-
+    alignItems: "center"
   },
   likeContainer: {
     padding: 10,
     width: 200,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-
+    justifyContent: "space-around",
+    alignItems: "center",
+    flexDirection: "row"
   },
   likeImage: {
     width: 30,
@@ -118,14 +115,14 @@ module.exports = StyleSheet.create({
     borderRadius: 15
   },
   likename: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 14
   },
   editModalContainer: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
   editModal: {
     backgroundColor: "white",
@@ -134,8 +131,8 @@ module.exports = StyleSheet.create({
     borderWidth: 2,
     borderColor: "silver"
   },
-  editButtons:{
-    flexDirection:"row",
+  editButtons: {
+    flexDirection: "row",
     justifyContent: "space-around",
     height: 40,
     width: 80,
@@ -146,7 +143,24 @@ module.exports = StyleSheet.create({
     borderColor: "silver",
     borderRadius: 5,
     margin: 10
+  },
+  menu: {
+    borderWidth: 1,
+    borderColor: "silver",
+    zIndex: 999,
+    width: 200,
+    right: 0,
+    top: 0,
+    backgroundColor: "white",
+    position: "absolute"
+  },
+  menuItem: {
+    padding: 10,
+    height: 40,
 
+    justifyContent: "center"
+  },
+  menuText: {
+    textAlign: "center"
   }
-
-})
+});

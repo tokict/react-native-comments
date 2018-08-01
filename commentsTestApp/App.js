@@ -57,7 +57,7 @@ export default class ExampleComments extends Component {
     try {
       return c.image_id && c.user.image_id !== ""
         ? c.user.image_id
-        : "https://ireview.live/img/no-user.png";
+        : require("./no-user.png");
     } catch (e) {
       console.log(e);
     }
@@ -224,6 +224,16 @@ export default class ExampleComments extends Component {
             //what to do when user clicks like
             likeAction={comment => {
               let comments = this.actions.like(this.state.comments, comment);
+              this.setState({
+                comments: comments
+              });
+            }}
+            //what to do when user clicks like
+            deleteAction={comment => {
+              let comments = this.actions.deleteComment(
+                this.state.comments,
+                comment
+              );
               this.setState({
                 comments: comments
               });
