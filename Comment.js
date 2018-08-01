@@ -120,7 +120,7 @@ export default class Comment extends PureComponent {
           </TouchableHighlight>
         </View>
         <TouchableOpacity
-          onPress={() => this.setModalVisible()}
+          onPress={() => this.setState({ menuVisible: false })}
           onLongPress={() => this.setModalVisible()}
           style={styles.right}
         >
