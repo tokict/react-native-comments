@@ -12,8 +12,7 @@ import {
   ActivityIndicator,
   Keyboard,
   TextInput,
-  TouchableHighlight,
-  TouchableOpacity
+  TouchableHighlight
 } from "react-native";
 
 import PropTypes from "prop-types";

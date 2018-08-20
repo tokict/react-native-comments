@@ -13,6 +13,16 @@
     "react-native-timeago": "^0.4.0",
     "react-native-vector-icons": "^4.3.0"
   },
+  "dev-dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.3",
+    "babel-preset-react-native": "4.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1"
+  },
   "deprecated": false,
   "description": "Complete view component for rendering comments in RN",
   "homepage": "https://github.com/tokict/react-native-comments#readme",
@@ -31,5 +41,5 @@
     "type": "git",
     "url": "git+https://github.com/tokict/react-native-comments.git"
   },
-  "version": "1.1.0"
+  "version": "1.1.1"
 }

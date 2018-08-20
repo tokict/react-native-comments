@@ -100,7 +100,7 @@ export default class Comment extends PureComponent {
                   { width: 30, height: 30, borderRadius: 15 }
                 ]}
                 source={
-                  typeof this.props.image === "string "
+                  typeof this.props.image === "string"
                     ? { uri: this.props.image }
                     : this.props.image
                 }
