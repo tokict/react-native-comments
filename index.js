@@ -428,6 +428,7 @@ export default class Comments extends PureComponent {
 
         {!this.state.loadingComments &&
         this.props.data &&
+        this.props.data.length &&
         this.props.paginateAction ? (
           <TouchableHighlight
             onPress={() => {
@@ -438,7 +439,9 @@ export default class Comments extends PureComponent {
             }}
           >
             <View>
-              <Text style={{ textAlign: "center" }}>Show previous</Text>
+              <Text style={{ textAlign: "center", color: "gray" }}>
+                Show previous
+              </Text>
             </View>
           </TouchableHighlight>
         ) : null}
@@ -480,6 +483,7 @@ export default class Comments extends PureComponent {
 
         {!this.state.loadingComments &&
         this.props.data &&
+        this.props.data.length &&
         this.props.paginateAction ? (
           <TouchableHighlight
             style={{ height: 70 }}
@@ -492,9 +496,15 @@ export default class Comments extends PureComponent {
               );
             }}
           >
-            <Text style={{ textAlign: "center" }}>Show more</Text>
+            <Text style={{ textAlign: "center", color: "gray" }}>
+              Show more
+            </Text>
           </TouchableHighlight>
-        ) : null}
+        ) : (
+          <Text style={{ textAlign: "center", color: "gray" }}>
+            No comments yet
+          </Text>
+        )}
 
         <Modal
           animationType={"slide"}
