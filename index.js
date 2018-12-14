@@ -16,7 +16,9 @@ import {
 } from "react-native";
 
 import PropTypes from "prop-types";
-import Icon from "react-native-vector-icons/FontAwesome";
+import IconFa from "react-native-vector-icons/FontAwesome";
+import IconFa5 from "react-native-vector-icons/FontAwesome5Pro";
+import IconFa5Pro from "react-native-vector-icons/FontAwesome5Pro";
 import styles from "./styles";
 import Collapsible from "react-native-collapsible";
 import Comment from "./Comment";
@@ -70,6 +72,17 @@ export default class Comments extends PureComponent {
         loadingComments: false
       });
     }
+  }
+
+  renderIcon(props) {
+    if (this.props.fa5) {
+      return <IconFa5 {...props} />;
+    }
+    if (this.props.fa5Pro) {
+      return <IconFa5Pro {...props} />;
+    }
+
+    return <IconFa {...props} />;
   }
 
   isExpanded(id) {
@@ -367,12 +380,12 @@ export default class Comments extends PureComponent {
                   Keyboard.dismiss();
                 }}
               >
-                <Icon
-                  style={styles.submit}
-                  name="caret-right"
-                  size={40}
-                  color="#000"
-                />
+                {this.renderIcon({
+                  style: styles.submit,
+                  name: "caret-right",
+                  size: 40,
+                  color: "gray"
+                })}
               </TouchableHighlight>
             </View>
           </Collapsible>
@@ -401,12 +414,12 @@ export default class Comments extends PureComponent {
               Keyboard.dismiss();
             }}
           >
-            <Icon
-              style={styles.submit}
-              name="caret-right"
-              size={40}
-              color="#000"
-            />
+            {this.renderIcon({
+              style: styles.submit,
+              name: "caret-right",
+              size: 40,
+              color: "gray"
+            })}
           </TouchableHighlight>
         </View>
         {!this.state.loadingComments && !this.props.data ? (
@@ -502,7 +515,7 @@ export default class Comments extends PureComponent {
             }}
           >
             <View style={{ position: "relative", left: 50, top: 5 }}>
-              <Icon name={"times"} size={40} />
+              {this.renderIcon({ name: "times", size: 40 })}
             </View>
           </TouchableHighlight>
           <Text style={styles.likeHeader}>Users that liked the comment</Text>
@@ -547,7 +560,7 @@ export default class Comments extends PureComponent {
                 >
                   <View style={styles.editButtons}>
                     <Text>Cancel</Text>
-                    <Icon name={"times"} size={20} />
+                    {this.renderIcon({ name: "times", size: 40 })}
                   </View>
                 </TouchableHighlight>
                 <TouchableHighlight
@@ -561,7 +574,7 @@ export default class Comments extends PureComponent {
                 >
                   <View style={styles.editButtons}>
                     <Text>Save</Text>
-                    <Icon name={"send"} size={20} />
+                    {this.renderIcon({ name: "caret-right", size: 20 })}
                   </View>
                 </TouchableHighlight>
               </View>

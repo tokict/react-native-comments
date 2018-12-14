@@ -1,0 +1,93 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "plugins": ["react", "react-native", "prettier"],
+  "rules": {
+    "no-undef": "off",
+    "indent": ["error", 4],
+    "comma-dangle": [0, "always-multiline"],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "arrow-parens": "off",
+    "react/prefer-stateless-function": [
+      "off",
+      {
+        "ignorePureComponents": true
+      }
+    ],
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "react/jsx-indent": [0, 4],
+    "react/jsx-closing-bracket-location": [
+      1,
+      {
+        "selfClosing": "line-aligned",
+        "nonEmpty": "after-props"
+      }
+    ],
+    "no-multiple-empty-lines": [
+      2,
+      {
+        "max": 2
+      }
+    ],
+    "react/jsx-indent-props": ["off", 4],
+    "import/first": "off",
+    "import/prefer-default-export": "off",
+    "no-trailing-spaces": "off",
+    "padded-blocks": "off",
+    "no-use-before-define": "off",
+    "global-require": "off",
+    "no-cond-assign": 1,
+    "no-console": 0,
+    "no-const-assign": 2,
+    "no-constant-condition": 0,
+    "no-control-regex": 0,
+    "no-dupe-keys": 2,
+    "no-empty": 0,
+    "no-ex-assign": 1,
+    "no-extra-boolean-cast": 1,
+    "no-extra-parens": 0,
+    "no-extra-semi": 1,
+    "no-func-assign": 1,
+    "no-inner-declarations": 0,
+    "no-invalid-regexp": 1,
+    "no-negated-in-lhs": 1,
+    "no-obj-calls": 1,
+    "no-regex-spaces": 1,
+    "no-reserved-keys": 0,
+    "no-sparse-arrays": 1,
+    "no-unreachable": 2,
+    "use-isnan": 1,
+    "valid-jsdoc": 0,
+    "valid-typeof": 1,
+    "no-prototype-builtins": 0,
+    "react/prop-types": 0,
+    "no-shadow": "off",
+    "no-unused-expressions": "off",
+    "quotes": ["error", "double"],
+    "semi": [2, "always"],
+    "space-before-function-paren": ["error", "never"],
+    "class-methods-use-this": "off"
+  }
+}
