@@ -22,6 +22,8 @@ You should add scroll to end of comments on succesful save action
 
 Do not update comments if the user is not expecting update. Updating comments could close some modals the user was potentially viewing
 
+Edit, Delete and Report are available on long press on comment container.
+
 ## ToDo
 
 Styling props

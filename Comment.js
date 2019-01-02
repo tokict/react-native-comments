@@ -50,6 +50,7 @@ export default class Comment extends PureComponent {
       ],
       true
     );
+    this.setState({ menuVisible: false });
   }
   handleReply() {
     this.props.replyAction(this.props.data);
@@ -59,6 +60,7 @@ export default class Comment extends PureComponent {
   }
   handleEdit() {
     this.props.editComment(this.props.data);
+    this.setState({ menuVisible: false });
   }
 
   handleDelete() {
@@ -74,6 +76,7 @@ export default class Comment extends PureComponent {
       ],
       true
     );
+    this.setState({ menuVisible: false });
   }
   handleUsernameTap() {
     if (this.props.usernameTapAction) {
@@ -100,9 +103,9 @@ export default class Comment extends PureComponent {
                   { width: 30, height: 30, borderRadius: 15 }
                 ]}
                 source={
-                  typeof this.props.image === "string"
-                    ? { uri: this.props.image }
-                    : this.props.image
+                  this.props.image === ""
+                    ? require("./no-user.png")
+                    : { uri: this.props.image }
                 }
               />
               {this.props.likesNr && this.props.likeAction ? (
@@ -111,7 +114,7 @@ export default class Comment extends PureComponent {
                   onPress={this.handleLikesTap}
                 >
                   <View style={{ flexDirection: "row" }}>
-                    <Icon name={"heart"} color={"#df1740"} size={15} />
+                    <Icon name="heart" color="#df1740" size={15} />
                     <Text style={styles.likeNr}> {this.props.likesNr}</Text>
                   </View>
                 </TouchableHighlight>
@@ -211,7 +214,6 @@ Comment.propTypes = {
   canEdit: PropTypes.bool,
   child: PropTypes.bool,
   editComment: PropTypes.func,
-  image: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   likeAction: PropTypes.func,
   liked: PropTypes.bool,
   likesNr: PropTypes.number,

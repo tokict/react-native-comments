@@ -31,6 +31,10 @@ export default class Comments extends PureComponent {
     this.bookmark = null;
     this.props = props;
     this.state = {
+      replyCommentText: null,
+      editCommentText: null,
+      editingComment: null,
+      newCommentText: null,
       loadingComments: props.data && props.data.length ? false : true,
       likesModalVisible: false,
       likesModalData: null,
@@ -39,10 +43,7 @@ export default class Comments extends PureComponent {
       expanded: [],
       pagination: []
     };
-    this.newCommentText = null;
-    this.replyCommentText = null;
-    this.editCommentText = null;
-    this.editingComment = null;
+
     this.textInputs = [];
     this.renderComment = this.renderComment.bind(this);
 
@@ -112,7 +113,6 @@ export default class Comments extends PureComponent {
   }
 
   focusOnReplyInput(id) {
-    console.log(id);
     let input = this.textInputs["input" + id];
 
     input.measure((x, y, width, height, pageX, pageY) => {
@@ -140,8 +140,11 @@ export default class Comments extends PureComponent {
   }
 
   handleEdit(c) {
-    this.editCommentText = this.props.bodyExtractor(c);
-    this.editingComment = c;
+    this.setState({
+      editCommentText: this.props.bodyExtractor(c),
+      editingComment: c
+    });
+
     this.setEditModalVisible(!this.state.editModalVisible);
   }
 
@@ -157,7 +160,7 @@ export default class Comments extends PureComponent {
   }
 
   handleEditAction(c) {
-    this.props.editAction(this.editCommentText, c);
+    this.props.editAction(this.state.editCommentText, c);
   }
 
   /**
@@ -363,20 +366,18 @@ export default class Comments extends PureComponent {
                 }
                 style={styles.input}
                 multiline={true}
-                onChangeText={text => (this.replyCommentText = text)}
+                value={this.state.replyCommentText}
+                onChangeText={text => this.setState({ replyCommentText: text })}
                 placeholder={"Write comment"}
                 numberOfLines={3}
               />
               <TouchableHighlight
                 onPress={() => {
                   this.props.saveAction(
-                    this.replyCommentText,
+                    this.state.replyCommentText,
                     this.props.keyExtractor(item)
                   );
-                  this.replyCommentText = null;
-                  this.textInputs[
-                    "input" + this.props.keyExtractor(item)
-                  ].clear();
+                  this.setState({ replyCommentText: null });
                   Keyboard.dismiss();
                 }}
               >
@@ -402,14 +403,14 @@ export default class Comments extends PureComponent {
             style={styles.input}
             ref={input => (this.textInputs["inputMain"] = input)}
             multiline={true}
-            onChangeText={text => (this.newCommentText = text)}
+            onChangeText={text => this.setState({ newCommentText: text })}
             placeholder={"Write comment"}
             numberOfLines={3}
           />
           <TouchableHighlight
             onPress={() => {
-              this.props.saveAction(this.newCommentText, false);
-              this.newCommentText = null;
+              this.props.saveAction(this.state.newCommentText, false);
+              this.setState({ newCommentText: null });
               this.textInputs["inputMain"].clear();
               Keyboard.dismiss();
             }}
@@ -557,8 +558,8 @@ export default class Comments extends PureComponent {
                 ref={input => (this.textInputs["editCommentInput"] = input)}
                 style={styles.input}
                 multiline={true}
-                defaultValue={this.editCommentText}
-                onChangeText={text => (this.editCommentText = text)}
+                value={this.state.editCommentText}
+                onChangeText={text => this.setState({ editCommentText: text })}
                 placeholder={"Edit comment"}
                 numberOfLines={3}
               />
@@ -570,14 +571,14 @@ export default class Comments extends PureComponent {
                 >
                   <View style={styles.editButtons}>
                     <Text>Cancel</Text>
-                    {this.renderIcon({ name: "times", size: 40 })}
+                    {this.renderIcon({ name: "times", size: 20 })}
                   </View>
                 </TouchableHighlight>
                 <TouchableHighlight
                   onPress={() => {
                     this.props.editAction(
-                      this.editCommentText,
-                      this.editingComment
+                      this.state.editCommentText,
+                      this.state.editingComment
                     );
                     this.setEditModalVisible(!this.state.editModalVisible);
                   }}

@@ -25,7 +25,7 @@
   "main": "index.js",
   "name": "react-native-comments",
   "peerDependencies": {
-    "react-native": "0.51"
+    "react-native": "0.54.4"
   },
   "repository": {
     "type": "git",

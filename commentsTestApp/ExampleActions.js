@@ -1,7 +1,7 @@
 /**
  * Created by tino on 1/15/18.
  */
-
+import moment from "moment";
 const sampleCommentsRaw = require("./sampleComments");
 
 sampleCommentsRaw.forEach(c => {
@@ -11,8 +11,6 @@ sampleCommentsRaw.forEach(c => {
 });
 
 const sampleComments = Object.freeze(sampleCommentsRaw);
-
-import moment from "moment";
 
 export function getComments() {
   const c = [...sampleComments];
@@ -27,15 +25,15 @@ export function paginateComments(
 ) {
   const c = [...sampleComments];
   if (!parent_commentId) {
-    const lastIndex = sampleComments.findIndex(c => {
-      return c.commentId == from_commentId;
-    });
+    const lastIndex = sampleComments.findIndex(
+      c => c.commentId == from_commentId
+    );
     if (direction == "up") {
       comments = comments.concat(c.splice(lastIndex + 1, 5));
     } else {
-      let start = lastIndex - 6 > 1 ? lastIndex - 6 : 0;
+      const start = lastIndex - 6 > 1 ? lastIndex - 6 : 0;
 
-      let part = c.slice(start, lastIndex);
+      const part = c.slice(start, lastIndex);
       console.log(start, lastIndex);
       comments = [...part, ...comments];
     }
@@ -53,7 +51,7 @@ export function paginateComments(
       const append = children.slice(target + 1, 5);
       comments[existingIndex].children.concat(append);
     } else {
-      let start = target - 6 >= 0 ? target : 0;
+      const start = target - 6 >= 0 ? target : 0;
       const prepend = children.slice(start - 6, target);
       comments[existingIndex].children = [
         ...prepend,
@@ -66,9 +64,9 @@ export function paginateComments(
 
 export function like(comments, cmnt) {
   if (!cmnt.parentId) {
-    //add result to comments
+    // add result to comments
     if (comments) {
-      comments.find(function(c) {
+      comments.find(c => {
         if (c.commentId === cmnt.commentId) {
           c.liked = !c.liked;
           return true;
@@ -76,10 +74,10 @@ export function like(comments, cmnt) {
       });
     }
   } else {
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.children) {
         let isItFound = false;
-        c.children.find(function(child) {
+        c.children.find(child => {
           if (child.commentId === cmnt.commentId) {
             child.liked = !child.liked;
             isItFound = true;
@@ -94,9 +92,9 @@ export function like(comments, cmnt) {
 
 export function edit(comments, cmnt, text) {
   if (!cmnt.parentId) {
-    //add result to comments
+    // add result to comments
     if (comments) {
-      comments.find(function(c) {
+      comments.find(c => {
         if (c.commentId === cmnt.commentId) {
           c.body = text;
           return true;
@@ -104,10 +102,10 @@ export function edit(comments, cmnt, text) {
       });
     }
   } else {
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.children) {
         let isItFound = false;
-        c.children.find(function(child) {
+        c.children.find(child => {
           if (child.commentId === cmnt.commentId) {
             child.body = text;
             isItFound = true;
@@ -122,16 +120,16 @@ export function edit(comments, cmnt, text) {
 
 export function deleteComment(comments, cmnt) {
   if (!cmnt.parentId) {
-    //add result to comments
+    // add result to comments
     if (comments) {
       const index = comments.findIndex(c => c.commentId === cmnt.commentId);
       comments.splice(index, 1);
     }
   } else {
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.children) {
         let isItFound = false;
-        const index = c.children.findIndex(function(child) {
+        const index = c.children.findIndex(child => {
           if (child.commentId === cmnt.commentId) {
             isItFound = true;
           }
@@ -148,7 +146,7 @@ export function deleteComment(comments, cmnt) {
 }
 
 export function save(comments, text, parentCommentId, date, username) {
-  //find last comment id
+  // find last comment id
   let lastCommentId = 0;
   sampleComments.forEach(c => {
     if (c.commentId > lastCommentId) {
@@ -163,7 +161,7 @@ export function save(comments, text, parentCommentId, date, username) {
     }
   });
 
-  let com = {
+  const com = {
     parentId: null,
     commentId: lastCommentId + 1,
     created_at: date,
@@ -178,39 +176,42 @@ export function save(comments, text, parentCommentId, date, username) {
   if (!parentCommentId) {
     comments.push(com);
   } else {
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.commentId === parentCommentId) {
         com.parentId = c.commentId;
+
         if (c.children) {
-          c.childrenCount = c.childrenCount + 1;
+          c.childrenCount = c.childrenCount * 1 + 1;
           c.children.push(com);
         } else {
           c.childrenCount = 1;
-          c.children = [com];
+
+          c.children = [];
+          c.children.push(com);
         }
         return true;
       }
     }, this);
   }
-  console.log(3, comments);
+
   return comments;
 }
 
 export function report(comments, cmnt) {
   if (!cmnt.parentId) {
-    //add result to comments
+    // add result to comments
 
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.commentId === cmnt.commentId) {
         c.reported = true;
         return true;
       }
     });
   } else {
-    comments.find(function(c) {
+    comments.find(c => {
       if (c.children) {
         let isItFound = false;
-        c.children.find(function(child) {
+        c.children.find(child => {
           if (child.commentId === cmnt.commentId) {
             child.reported = true;
             isItFound = true;

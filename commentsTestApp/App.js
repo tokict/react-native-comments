@@ -55,9 +55,7 @@ export default class ExampleComments extends Component {
 
   extractImage(c) {
     try {
-      return c.image_id && c.user.image_id !== ""
-        ? c.user.image_id
-        : require("./no-user.png");
+      return c.image_id && c.user.image_id !== "" ? c.user.image_id : "";
     } catch (e) {
       console.log(e);
     }
@@ -118,10 +116,10 @@ export default class ExampleComments extends Component {
 
     return (
       /*
-      * They should add scroll to end on save action
-      *They should not update comments if there are modals opened
-      *
-      * */
+       * They should add scroll to end on save action
+       *They should not update comments if there are modals opened
+       *
+       * */
       <ScrollView
         style={styles.container}
         keyboardShouldPersistTaps="always"
@@ -142,7 +140,7 @@ export default class ExampleComments extends Component {
           <Comments
             data={data}
             //To compare is user the owner
-            viewingUserName={"testUser"}
+            viewingUserName={"Pearline@veda.ca"}
             //how many comments to display on init
             initialDisplayCount={5}
             //How many minutes to pass before locking for editing
