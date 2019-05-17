@@ -39,8 +39,7 @@ OnLongTap opens the menu
 | Name                   | Type   | Description                                                                                                                                                                 | Must return                                                          | Passed params |
 | ---------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------- |
 | data                   | array  | Array of comments to render. One item = one complete comment with children                                                                                                  |
-| fa5 || fa5Pro        | string | Select Fontawesome5 or FontAwesome5Pro if your app is already using them   
-
+| fa5 or fa5Pro        | string | Select Fontawesome5 or FontAwesome5Pro if your app is already using them
 | viewingUserName        | string | What is the username of the current user. used to check editability                                                                                                         |
 | initialDisplayCount    | number | How many comments to render at first                                                                                                                                        |
 | editMinuteLimit        | number | Time limit for editing new comments. None for limitless                                                                                                                     |
