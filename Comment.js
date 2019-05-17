@@ -166,41 +166,57 @@ export default class Comment extends PureComponent {
         </TouchableOpacity>
         {this.state.menuVisible ? (
           <View style={styles.menu}>
-            {this.props.canEdit ? (
+            <View style={{ flex: 1.5 }}>
+              {this.props.canEdit ? (
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={this.handleEdit}
+                >
+                  <Text style={styles.menuText}>Edit</Text>
+                </TouchableOpacity>
+              ) : null}
+              {this.props.reportAction && !this.props.isOwnComment ? (
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={this.handleReport}
+                >
+                  {this.props.reported ? (
+                    <Text
+                      style={[
+                        styles.menuText,
+                        { fontStyle: "italic", fontSize: 11 }
+                      ]}
+                    >
+                      Reported
+                    </Text>
+                  ) : (
+                    <Text style={styles.menuText}>Report</Text>
+                  )}
+                </TouchableOpacity>
+              ) : null}
+              {this.props.canEdit ? (
+                <TouchableOpacity
+                  style={styles.menuItem}
+                  onPress={this.handleDelete}
+                >
+                  <Text style={styles.menuText}>Delete</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
+            <View
+              style={{
+                flex: 0.5,
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
               <TouchableOpacity
-                style={styles.menuItem}
-                onPress={this.handleEdit}
+                style={styles.menuClose}
+                onPress={() => this.setState({ menuVisible: false })}
               >
-                <Text style={styles.menuText}>Edit</Text>
+                <Text style={{ color: "silver" }}>X</Text>
               </TouchableOpacity>
-            ) : null}
-            {this.props.reportAction ? (
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={this.handleReport}
-              >
-                {this.props.reported ? (
-                  <Text
-                    style={[
-                      styles.menuText,
-                      { fontStyle: "italic", fontSize: 11 }
-                    ]}
-                  >
-                    Reported
-                  </Text>
-                ) : (
-                  <Text style={styles.menuText}>Report</Text>
-                )}
-              </TouchableOpacity>
-            ) : null}
-            {this.props.canEdit ? (
-              <TouchableOpacity
-                style={styles.menuItem}
-                onPress={this.handleDelete}
-              >
-                <Text style={styles.menuText}>Delete</Text>
-              </TouchableOpacity>
-            ) : null}
+            </View>
           </View>
         ) : null}
       </View>
