@@ -8,7 +8,6 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
-  TouchableHighlight,
   TouchableOpacity,
   Modal,
   Alert
@@ -95,7 +94,10 @@ export default class Comment extends PureComponent {
     return (
       <View style={styles.commentContainer}>
         <View style={styles.left}>
-          <TouchableHighlight onPress={this.handleUsernameTap}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={this.handleUsernameTap}
+          >
             <View style={{ alignItems: "center" }}>
               <Image
                 style={[
@@ -109,7 +111,8 @@ export default class Comment extends PureComponent {
                 }
               />
               {this.props.likesNr && this.props.likeAction ? (
-                <TouchableHighlight
+                <TouchableOpacity
+                  activeOpacity={0.7}
                   style={[styles.actionButton, { paddingTop: 5 }]}
                   onPress={this.handleLikesTap}
                 >
@@ -117,28 +120,33 @@ export default class Comment extends PureComponent {
                     <Icon name="heart" color="#df1740" size={15} />
                     <Text style={styles.likeNr}> {this.props.likesNr}</Text>
                   </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
               ) : null}
             </View>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
+          activeOpacity={0.7}
           onPress={() => this.setState({ menuVisible: false })}
           onLongPress={() => this.setModalVisible()}
           style={styles.right}
         >
           <View style={styles.rightContent}>
             <View style={styles.rightContentTop}>
-              <TouchableHighlight onPress={this.handleUsernameTap}>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={this.handleUsernameTap}
+              >
                 <Text style={styles.name}>{this.props.username}</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
             <Text style={styles.body}>{this.props.body}</Text>
           </View>
           <View style={styles.rightActionBar}>
             <TimeAgo style={styles.time} time={this.props.updatedAt} />
             {this.props.likeAction ? (
-              <TouchableHighlight
+              <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.actionButton}
                 onPress={this.handleLike}
               >
@@ -150,19 +158,21 @@ export default class Comment extends PureComponent {
                     ]}
                   >{`${this.props.i18nKeys.like || "Like"}`}</Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             ) : null}
             {this.props.replyAction ? (
-              <TouchableHighlight
+              <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.actionButton}
                 onPress={this.handleReply}
               >
                 <Text style={styles.actionText}>{`${this.props.i18nKeys
                   .reply_label || "Reply"}`}</Text>
-              </TouchableHighlight>
+              </TouchableOpacity>
             ) : null}
             {this.props.reportAction ? (
               <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.actionButton}
                 onPress={this.handleReport}
               >
@@ -185,6 +195,7 @@ export default class Comment extends PureComponent {
           <View style={styles.menu}>
             {this.props.canEdit ? (
               <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.menuItem}
                 onPress={this.handleEdit}
               >
@@ -194,6 +205,7 @@ export default class Comment extends PureComponent {
             ) : null}
             {this.props.canEdit ? (
               <TouchableOpacity
+                activeOpacity={0.7}
                 style={styles.menuItem}
                 onPress={this.handleDelete}
               >
