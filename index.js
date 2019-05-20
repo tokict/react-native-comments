@@ -435,25 +435,6 @@ export default class Comments extends PureComponent {
             .no_comment_yet || "No comment yet"}`}</Text>
         ) : null}
 
-        {!this.state.loadingComments &&
-          !!this.props.data &&
-          !!this.props.data.length &&
-          this.props.paginateAction && (
-            <TouchableHighlight
-              onPress={() => {
-                this.paginate(
-                  this.props.keyExtractor(this.props.data[0]),
-                  "down"
-                );
-              }}
-            >
-              <View>
-                <Text style={{ textAlign: "center", color: "gray" }}>
-                  `${this.props.i18nKeys.show_previous || "Show previous"}`
-                </Text>
-              </View>
-            </TouchableHighlight>
-          )}
         {/*Comments*/}
         {this.props.data && (
           <FlatList
