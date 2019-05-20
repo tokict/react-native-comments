@@ -148,9 +148,7 @@ export default class Comment extends PureComponent {
                       styles.actionText,
                       { color: this.props.liked ? "#4DB2DF" : null }
                     ]}
-                  >
-                    Like{" "}
-                  </Text>
+                  >{`${this.props.i18nKeys.like || "Like"}`}</Text>
                 </View>
               </TouchableHighlight>
             ) : null}
@@ -159,64 +157,50 @@ export default class Comment extends PureComponent {
                 style={styles.actionButton}
                 onPress={this.handleReply}
               >
-                <Text style={styles.actionText}>Reply</Text>
+                <Text style={styles.actionText}>{`${this.props.i18nKeys
+                  .reply_label || "Reply"}`}</Text>
               </TouchableHighlight>
+            ) : null}
+            {this.props.reportAction ? (
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={this.handleReport}
+              >
+                {this.props.reported ? (
+                  <Text
+                    style={[
+                      styles.actionText,
+                      { fontStyle: "italic", fontSize: 11 }
+                    ]}
+                  >{`${this.props.i18nKeys.reported || "Reported"}`}</Text>
+                ) : (
+                  <Text style={styles.actionText}>{`${this.props.i18nKeys
+                    .report_label || "Report"}`}</Text>
+                )}
+              </TouchableOpacity>
             ) : null}
           </View>
         </TouchableOpacity>
         {this.state.menuVisible ? (
           <View style={styles.menu}>
-            <View style={{ flex: 1.5 }}>
-              {this.props.canEdit ? (
-                <TouchableOpacity
-                  style={styles.menuItem}
-                  onPress={this.handleEdit}
-                >
-                  <Text style={styles.menuText}>Edit</Text>
-                </TouchableOpacity>
-              ) : null}
-              {this.props.reportAction && !this.props.isOwnComment ? (
-                <TouchableOpacity
-                  style={styles.menuItem}
-                  onPress={this.handleReport}
-                >
-                  {this.props.reported ? (
-                    <Text
-                      style={[
-                        styles.menuText,
-                        { fontStyle: "italic", fontSize: 11 }
-                      ]}
-                    >
-                      Reported
-                    </Text>
-                  ) : (
-                    <Text style={styles.menuText}>Report</Text>
-                  )}
-                </TouchableOpacity>
-              ) : null}
-              {this.props.canEdit ? (
-                <TouchableOpacity
-                  style={styles.menuItem}
-                  onPress={this.handleDelete}
-                >
-                  <Text style={styles.menuText}>Delete</Text>
-                </TouchableOpacity>
-              ) : null}
-            </View>
-            <View
-              style={{
-                flex: 0.5,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
+            {this.props.canEdit ? (
               <TouchableOpacity
-                style={styles.menuClose}
-                onPress={() => this.setState({ menuVisible: false })}
+                style={styles.menuItem}
+                onPress={this.handleEdit}
               >
-                <Text style={{ color: "silver" }}>X</Text>
+                <Text style={styles.menuText}>{`${this.props.i18nKeys
+                  .edit_label || "Edit"}`}</Text>
               </TouchableOpacity>
-            </View>
+            ) : null}
+            {this.props.canEdit ? (
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={this.handleDelete}
+              >
+                <Text style={styles.menuText}>{`${this.props.i18nKeys
+                  .delete_label || "Delete"}`}</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         ) : null}
       </View>
