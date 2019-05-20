@@ -191,30 +191,26 @@ export default class Comment extends PureComponent {
             ) : null}
           </View>
         </TouchableOpacity>
-        {this.state.menuVisible ? (
+        {this.state.menuVisible && this.props.canEdit && (
           <View style={styles.menu}>
-            {this.props.canEdit ? (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={styles.menuItem}
-                onPress={this.handleEdit}
-              >
-                <Text style={styles.menuText}>{`${this.props.i18nKeys
-                  .edit_label || "Edit"}`}</Text>
-              </TouchableOpacity>
-            ) : null}
-            {this.props.canEdit ? (
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={styles.menuItem}
-                onPress={this.handleDelete}
-              >
-                <Text style={styles.menuText}>{`${this.props.i18nKeys
-                  .delete_label || "Delete"}`}</Text>
-              </TouchableOpacity>
-            ) : null}
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.menuItem}
+              onPress={this.handleEdit}
+            >
+              <Text style={styles.menuText}>{`${this.props.i18nKeys
+                .edit_label || "Edit"}`}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.menuItem}
+              onPress={this.handleDelete}
+            >
+              <Text style={styles.menuText}>{`${this.props.i18nKeys
+                .delete_label || "Delete"}`}</Text>
+            </TouchableOpacity>
           </View>
-        ) : null}
+        )}
       </View>
     );
   }
