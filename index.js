@@ -192,6 +192,7 @@ export default class Comments extends PureComponent {
         editComment={this.handleEdit}
         likesTapAction={this.props.likeAction ? this.handleLikesTap : null}
         i18nKeys={this.props.i18nKeys}
+        additionalStyles={this.props.additionalStyles}
       />
     );
   }
@@ -621,5 +622,7 @@ Comments.propTypes = {
   editAction: PropTypes.func.isRequired,
   reportAction: PropTypes.func,
   likeAction: PropTypes.func,
-  paginateAction: PropTypes.func
+  paginateAction: PropTypes.func,
+  additionalStyles: PropTypes.object,
+  i18nKeys: PropTypes.object
 };
