@@ -191,6 +191,7 @@ export default class Comments extends PureComponent {
         editComment={this.handleEdit}
         likesTapAction={this.props.likeAction ? this.handleLikesTap : null}
         i18nKeys={this.props.i18nKeys}
+        locale={this.props.locale}
         additionalStyles={this.props.additionalStyles}
       />
     );

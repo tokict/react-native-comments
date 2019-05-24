@@ -120,7 +120,7 @@ export default class Comment extends PureComponent {
             <Text style={styles.body}>{this.props.body}</Text>
           </View>
           <View style={styles.rightActionBar}>
-            <Text style={styles.time}>{getDistanceInWordsToNow(this.props.updatedAt)}</Text>
+            <Text style={styles.time}>{getDistanceInWordsToNow(this.props.updatedAt, this.props.locale || 'en')}</Text>
             {this.props.likeAction && (
               <TouchableOpacity activeOpacity={0.7} style={styles.actionButton} onPress={this.handleLike}>
                 <View style={{ flexDirection: 'row' }}>
