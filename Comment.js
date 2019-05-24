@@ -5,9 +5,9 @@ import React, { PureComponent } from 'react';
 import { View, Text, Image, FlatList, ActivityIndicator, TouchableOpacity, Modal, Alert } from 'react-native';
 
 import PropTypes from 'prop-types';
-import TimeAgo from 'react-native-timeago';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
+import { getDistanceInWordsToNow } from './lib/dates/getDistanceInWordsToNow';
 
 export default class Comment extends PureComponent {
   constructor(props) {
@@ -120,7 +120,7 @@ export default class Comment extends PureComponent {
             <Text style={styles.body}>{this.props.body}</Text>
           </View>
           <View style={styles.rightActionBar}>
-            <TimeAgo style={styles.time} time={this.props.updatedAt} />
+            <Text style={styles.time}>{getDistanceInWordsToNow(this.props.updatedAt)}</Text>
             {this.props.likeAction && (
               <TouchableOpacity activeOpacity={0.7} style={styles.actionButton} onPress={this.handleLike}>
                 <View style={{ flexDirection: 'row' }}>
