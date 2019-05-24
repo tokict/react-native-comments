@@ -29,14 +29,14 @@ export default class Comment extends PureComponent {
 
   handleReport() {
     Alert.alert(
-      'Confirm report',
-      'Are you sure you want to report?',
+      this.props.i18nKeys.report.title || 'Confirm report',
+      this.props.i18nKeys.report.subtitle || 'Are you sure you want to report?',
       [
         {
-          text: 'Yes',
+          text: this.props.i18nKeys.report.yes || 'Yes',
           onPress: () => this.props.reportAction(this.props.data),
         },
-        { text: 'No', onPress: () => null },
+        { text: this.props.i18nKeys.report.no || 'No', onPress: () => null },
       ],
       true
     );
@@ -55,14 +55,14 @@ export default class Comment extends PureComponent {
 
   handleDelete() {
     Alert.alert(
-      'Confirm delete',
-      'Are you sure you want to delete?',
+      this.props.i18nKeys.delete.title || 'delete',
+      this.props.i18nKeys.delete.subtitle || 'Are you sure you want to delete?',
       [
         {
-          text: 'Yes',
+          text: this.props.i18nKeys.delete.yes || 'Yes',
           onPress: () => this.props.deleteAction(this.props.data),
         },
-        { text: 'No', onPress: () => null },
+        { text: this.props.i18nKeys.delete.no || 'No', onPress: () => null },
       ],
       true
     );
