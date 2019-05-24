@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import TimeAgo from 'react-native-timeago';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
-import Collapsible from 'react-native-collapsible';
 
 export default class Comment extends PureComponent {
   constructor(props) {
