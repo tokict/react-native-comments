@@ -1,8 +1,7 @@
 /**
  * Created by tino on 1/15/18.
  */
-import moment from "moment";
-const sampleCommentsRaw = require("./sampleComments");
+const sampleCommentsRaw = require('./sampleComments');
 
 sampleCommentsRaw.forEach(c => {
   if (c.children) {
@@ -17,18 +16,11 @@ export function getComments() {
   return c.splice(c.length - 5);
 }
 
-export function paginateComments(
-  comments,
-  from_commentId,
-  direction,
-  parent_commentId
-) {
+export function paginateComments(comments, from_commentId, direction, parent_commentId) {
   const c = [...sampleComments];
   if (!parent_commentId) {
-    const lastIndex = sampleComments.findIndex(
-      c => c.commentId == from_commentId
-    );
-    if (direction == "up") {
+    const lastIndex = sampleComments.findIndex(c => c.commentId == from_commentId);
+    if (direction == 'up') {
       comments = comments.concat(c.splice(lastIndex + 1, 5));
     } else {
       const start = lastIndex - 6 > 1 ? lastIndex - 6 : 0;
@@ -38,25 +30,18 @@ export function paginateComments(
       comments = [...part, ...comments];
     }
   } else {
-    const parentLastIndexDB = sampleComments.findIndex(
-      c => c.commentId == parent_commentId
-    );
+    const parentLastIndexDB = sampleComments.findIndex(c => c.commentId == parent_commentId);
     const children = c[parentLastIndexDB].children;
     const target = children.findIndex(c => c.commentId == from_commentId);
-    const existingIndex = comments.findIndex(
-      c => c.commentId == parent_commentId
-    );
+    const existingIndex = comments.findIndex(c => c.commentId == parent_commentId);
 
-    if (direction == "up") {
+    if (direction == 'up') {
       const append = children.slice(target + 1, 5);
       comments[existingIndex].children.concat(append);
     } else {
       const start = target - 6 >= 0 ? target : 0;
       const prepend = children.slice(start - 6, target);
-      comments[existingIndex].children = [
-        ...prepend,
-        ...comments[existingIndex].children
-      ];
+      comments[existingIndex].children = [...prepend, ...comments[existingIndex].children];
     }
   }
   return comments;
@@ -170,7 +155,7 @@ export function save(comments, text, parentCommentId, date, username) {
     reported: false,
     email: username,
     body: text,
-    likes: []
+    likes: [],
   };
 
   if (!parentCommentId) {

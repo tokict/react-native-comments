@@ -1,13 +1,13 @@
 /**
  * Created by tino on 6/6/17.
  */
-import React, { Component } from "react";
-import { ScrollView, Image } from "react-native";
+import React, { Component } from 'react';
+import { ScrollView, Image } from 'react-native';
 
-import styles from "./styles";
-import Comments from "react-native-comments";
-import * as commentActions from "./ExampleActions";
-import moment from "moment";
+import Comments from 'react-native-comments';
+import moment from 'moment';
+import styles from './styles';
+import * as commentActions from './ExampleActions';
 
 export default class ExampleComments extends Component {
   constructor(props) {
@@ -20,7 +20,7 @@ export default class ExampleComments extends Component {
       lastCommentUpdate: null,
       review: props.review ? props.review : null,
       login: null,
-      id: props.id
+      id: props.id,
     };
 
     this.scrollIndex = 0;
@@ -33,13 +33,13 @@ export default class ExampleComments extends Component {
     this.setState({
       comments: c,
       loadingComments: false,
-      lastCommentUpdate: new Date().getTime()
+      lastCommentUpdate: new Date().getTime(),
     });
   }
 
   extractUsername(c) {
     try {
-      return c.email !== "" ? c.email : null;
+      return c.email !== '' ? c.email : null;
     } catch (e) {
       console.log(e);
     }
@@ -47,7 +47,7 @@ export default class ExampleComments extends Component {
 
   extractBody(c) {
     try {
-      return c.body && c.body !== "" ? c.body : null;
+      return c.body && c.body !== '' ? c.body : null;
     } catch (e) {
       console.log(e);
     }
@@ -55,7 +55,7 @@ export default class ExampleComments extends Component {
 
   extractImage(c) {
     try {
-      return c.image_id && c.user.image_id !== "" ? c.user.image_id : "";
+      return c.image_id && c.user.image_id !== '' ? c.user.image_id : '';
     } catch (e) {
       console.log(e);
     }
@@ -100,8 +100,8 @@ export default class ExampleComments extends Component {
         name: like.username,
         user_id: like.user_id,
         tap: username => {
-          console.log("Taped: " + username);
-        }
+          console.log('Taped: ' + username);
+        },
       };
     });
   }
@@ -111,7 +111,6 @@ export default class ExampleComments extends Component {
   }
 
   render() {
-    const review = this.state.review;
     const data = this.state.comments;
 
     return (
@@ -126,13 +125,12 @@ export default class ExampleComments extends Component {
         onScroll={event => {
           this.scrollIndex = event.nativeEvent.contentOffset.y;
         }}
-        ref={"scrollView"}
+        ref={'scrollView'}
       >
         <Image
           style={{ height: 200 }}
           source={{
-            uri:
-              "https://pbs.twimg.com/profile_images/447374371917922304/P4BzupWu_400x400.jpeg"
+            uri: 'https://pbs.twimg.com/profile_images/447374371917922304/P4BzupWu_400x400.jpeg',
           }}
         />
 
@@ -140,18 +138,18 @@ export default class ExampleComments extends Component {
           <Comments
             data={data}
             //To compare is user the owner
-            viewingUserName={"Pearline@veda.ca"}
+            viewingUserName={'Pearline@veda.ca'}
             //how many comments to display on init
             initialDisplayCount={5}
             //How many minutes to pass before locking for editing
             editMinuteLimit={0}
             //What happens when user taps on username or photo
             usernameTapAction={username => {
-              console.log("Taped user: " + username);
+              console.log('Taped user: ' + username);
             }}
             //Where can we find the children within item.
             //Children must be prepared before for pagination sake
-            childPropName={"children"}
+            childPropName={'children'}
             isChild={item => this.isCommentChild(item)}
             //We use this for key prop on flat list (i.e. its comment_id)
             keyExtractor={item => item.commentId}
@@ -180,21 +178,15 @@ export default class ExampleComments extends Component {
               this.refs.scrollView.scrollTo({
                 x: null,
                 y: this.scrollIndex + offset - 300,
-                animated: true
+                animated: true,
               });
             }}
             //what to do when user clicks submits edited comment
             saveAction={(text, parentCommentId) => {
-              let date = moment().format("YYYY-MM-DD H:mm:ss");
-              let comments = this.actions.save(
-                this.state.comments,
-                text,
-                parentCommentId,
-                date,
-                "testUser"
-              );
+              let date = moment().format('YYYY-MM-DD H:mm:ss');
+              let comments = this.actions.save(this.state.comments, text, parentCommentId, date, 'testUser');
               this.setState({
-                comments: comments
+                comments,
               });
 
               if (!parentCommentId) {
@@ -203,37 +195,30 @@ export default class ExampleComments extends Component {
             }}
             //what to do when user clicks submits edited comment
             editAction={(text, comment) => {
-              let comments = this.actions.edit(
-                this.state.comments,
-                comment,
-                text
-              );
+              let comments = this.actions.edit(this.state.comments, comment, text);
               this.setState({
-                comments: comments
+                comments,
               });
             }}
             //what to do when user clicks report submit
             reportAction={comment => {
               let comments = this.actions.report(this.state.comments, comment);
               this.setState({
-                comments: comments
+                comments,
               });
             }}
             //what to do when user clicks like
             likeAction={comment => {
               let comments = this.actions.like(this.state.comments, comment);
               this.setState({
-                comments: comments
+                comments,
               });
             }}
             //what to do when user clicks like
             deleteAction={comment => {
-              let comments = this.actions.deleteComment(
-                this.state.comments,
-                comment
-              );
+              let comments = this.actions.deleteComment(this.state.comments, comment);
               this.setState({
-                comments: comments
+                comments,
               });
             }}
             //Must return promise
@@ -248,15 +233,15 @@ export default class ExampleComments extends Component {
               );
 
               this.setState({
-                comments: newComments
+                comments: newComments,
               });
               let self = this;
               setTimeout(function() {
-                if (direction == "up") {
+                if (direction == 'up') {
                   self.refs.scrollView.scrollTo({
                     x: 0,
                     y: 500,
-                    animated: true
+                    animated: true,
                   });
                 } else {
                   self.refs.scrollView.scrollTo({ x: 0, y: 0, animated: true });

@@ -7,6 +7,9 @@
     "url": "https://github.com/tokict/react-native-comments/issues"
   },
   "bundleDependencies": false,
+  "scripts": {
+    "test:lint": "yarn eslint ."
+  },
   "dependencies": {
     "date-fns": "^1.30.1",
     "prop-types": "^15.5.10",
@@ -31,5 +34,10 @@
     "type": "git",
     "url": "git+https://github.com/tokict/react-native-comments.git"
   },
-  "version": "1.1.5"
+  "version": "1.1.5",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-bambi": "^1.4.0",
+    "prettier": "^1.17.1"
+  }
 }
