@@ -27,6 +27,9 @@ export default class Comment extends PureComponent {
   }
 
   handleReport() {
+    if (this.props.reported) {
+      return this.props.reportAction(this.props.data);
+    }
     Alert.alert(
       this.props.i18nKeys.report.title || 'Confirm report',
       this.props.i18nKeys.report.subtitle || 'Are you sure you want to report?',
@@ -39,7 +42,6 @@ export default class Comment extends PureComponent {
       ],
       true
     );
-    this.setState({ menuVisible: false });
   }
   handleReply() {
     this.props.replyAction(this.props.data);
