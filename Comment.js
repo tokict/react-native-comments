@@ -6,11 +6,8 @@ import {
   View,
   Text,
   Image,
-  FlatList,
-  ActivityIndicator,
   TouchableHighlight,
   TouchableOpacity,
-  Modal,
   Alert
 } from "react-native";
 
@@ -18,7 +15,6 @@ import PropTypes from "prop-types";
 import TimeAgo from "react-native-timeago";
 import Icon from "react-native-vector-icons/FontAwesome";
 import styles from "./styles";
-import Collapsible from "react-native-collapsible";
 
 export default class Comment extends PureComponent {
   constructor(props) {
@@ -36,6 +32,9 @@ export default class Comment extends PureComponent {
     this.handleUsernameTap = this.handleUsernameTap.bind(this);
     this.handleLikesTap = this.handleLikesTap.bind(this);
   }
+
+  getStyle = name =>
+    this.props.styles && this.props.styles[name] ? this.props.styles[name] : {};
 
   handleReport() {
     Alert.alert(
@@ -93,14 +92,17 @@ export default class Comment extends PureComponent {
 
   render() {
     return (
-      <View style={styles.commentContainer}>
+      <View
+        style={[styles.commentContainer, this.getStyle("commentContainer")]}
+      >
         <View style={styles.left}>
           <TouchableHighlight onPress={this.handleUsernameTap}>
             <View style={{ alignItems: "center" }}>
               <Image
                 style={[
                   styles.image,
-                  { width: 30, height: 30, borderRadius: 15 }
+                  { width: 30, height: 30, borderRadius: 15 },
+                  this.getStyle("avatar")
                 ]}
                 source={
                   this.props.image === ""
@@ -130,13 +132,20 @@ export default class Comment extends PureComponent {
           <View style={styles.rightContent}>
             <View style={styles.rightContentTop}>
               <TouchableHighlight onPress={this.handleUsernameTap}>
-                <Text style={styles.name}>{this.props.username}</Text>
+                <Text style={[styles.name, this.getStyle("username")]}>
+                  {this.props.username}
+                </Text>
               </TouchableHighlight>
             </View>
-            <Text style={styles.body}>{this.props.body}</Text>
+            <Text style={[styles.body, this.getStyle("body")]}>
+              {this.props.body}
+            </Text>
           </View>
           <View style={styles.rightActionBar}>
-            <TimeAgo style={styles.time} time={this.props.updatedAt} />
+            <TimeAgo
+              style={[styles.time, this.getStyle("timeAgoText")]}
+              time={this.props.updatedAt}
+            />
             {this.props.likeAction ? (
               <TouchableHighlight
                 style={styles.actionButton}
@@ -146,7 +155,9 @@ export default class Comment extends PureComponent {
                   <Text
                     style={[
                       styles.actionText,
-                      { color: this.props.liked ? "#4DB2DF" : null }
+                      { color: this.props.liked ? "#4DB2DF" : null },
+                      this.getStyle("actionText"),
+                      this.getStyle("likeText")
                     ]}
                   >
                     Like{" "}
@@ -159,7 +170,15 @@ export default class Comment extends PureComponent {
                 style={styles.actionButton}
                 onPress={this.handleReply}
               >
-                <Text style={styles.actionText}>Reply</Text>
+                <Text
+                  style={[
+                    styles.actionText,
+                    this.getStyle("actionText"),
+                    this.getStyle("replyText")
+                  ]}
+                >
+                  Reply
+                </Text>
               </TouchableHighlight>
             ) : null}
           </View>
@@ -172,7 +191,15 @@ export default class Comment extends PureComponent {
                   style={styles.menuItem}
                   onPress={this.handleEdit}
                 >
-                  <Text style={styles.menuText}>Edit</Text>
+                  <Text
+                    style={[
+                      styles.menuText,
+                      this.getStyle("menuText"),
+                      this.getStyle("editText")
+                    ]}
+                  >
+                    Edit
+                  </Text>
                 </TouchableOpacity>
               ) : null}
               {this.props.reportAction && !this.props.isOwnComment ? (
@@ -184,13 +211,23 @@ export default class Comment extends PureComponent {
                     <Text
                       style={[
                         styles.menuText,
-                        { fontStyle: "italic", fontSize: 11 }
+                        { fontStyle: "italic", fontSize: 11 },
+                        this.getStyle("menuText"),
+                        this.getStyle("reportedText")
                       ]}
                     >
                       Reported
                     </Text>
                   ) : (
-                    <Text style={styles.menuText}>Report</Text>
+                    <Text
+                      style={[
+                        styles.menuText,
+                        this.getStyle("menuText"),
+                        this.getStyle("reportText")
+                      ]}
+                    >
+                      Report
+                    </Text>
                   )}
                 </TouchableOpacity>
               ) : null}
@@ -199,7 +236,15 @@ export default class Comment extends PureComponent {
                   style={styles.menuItem}
                   onPress={this.handleDelete}
                 >
-                  <Text style={styles.menuText}>Delete</Text>
+                  <Text
+                    style={[
+                      styles.menuText,
+                      this.getStyle("menuText"),
+                      this.getStyle("deleteText")
+                    ]}
+                  >
+                    Delete
+                  </Text>
                 </TouchableOpacity>
               ) : null}
             </View>
@@ -227,6 +272,8 @@ export default class Comment extends PureComponent {
 Comment.propTypes = {
   data: PropTypes.object,
   body: PropTypes.string,
+  styles: PropTypes.object,
+  canEdit: PropTypes.bool,
   canEdit: PropTypes.bool,
   child: PropTypes.bool,
   editComment: PropTypes.func,

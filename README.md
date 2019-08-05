@@ -1,4 +1,3 @@
-
 # React native comments
 
 ![Screenshot](https://tinotokic.com/img/react-native-comments.gif)
@@ -39,8 +38,10 @@ OnLongTap opens the menu
 | Name                   | Type   | Description                                                                                                                                                                 | Must return                                                          | Passed params |
 | ---------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------- |
 | data                   | array  | Array of comments to render. One item = one complete comment with children                                                                                                  |
-| fa5 or fa5Pro        | string | Select Fontawesome5 or FontAwesome5Pro if your app is already using them
+| fa5 or fa5Pro          | string | Select Fontawesome5 or FontAwesome5Pro if your app is already using them                                                                                                    |
 | viewingUserName        | string | What is the username of the current user. used to check editability                                                                                                         |
+| userIsAdmin            | bool   | If true, user can edit or delete any comment                                                                                                                                |
+| styles                 | object | Styles to pass to Comment component. See getStyle invocations to find out what can be used                                                                                  |
 | initialDisplayCount    | number | How many comments to render at first                                                                                                                                        |
 | editMinuteLimit        | number | Time limit for editing new comments. None for limitless                                                                                                                     |
 | usernameTapAction      | func   | Function to call when username and image are taped on comment                                                                                                               | username                                                             |

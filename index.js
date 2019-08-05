@@ -173,7 +173,9 @@ export default class Comments extends PureComponent {
         usernameTapAction={this.handleUsernameTap}
         username={this.props.usernameExtractor(c)}
         body={this.props.bodyExtractor(c)}
-        likesNr={this.props.likesExtractor(c)?this.props.likesExtractor(c).length:0}
+        likesNr={
+          this.props.likesExtractor(c) ? this.props.likesExtractor(c).length : 0
+        }
         canEdit={this.canUserEdit(c)}
         updatedAt={this.props.editTimeExtractor(c)}
         replyAction={this.props.replyAction ? this.handleReply : null}
@@ -242,11 +244,14 @@ export default class Comments extends PureComponent {
    * Can user edit a comment
    * */
   canUserEdit(item) {
-    if (this.props.viewingUserName == this.props.usernameExtractor(item)) {
+    if (
+      this.props.viewingUserName == this.props.usernameExtractor(item) ||
+      this.props.userIsAdmin
+    ) {
       if (!this.props.editMinuteLimit) return true;
       let created =
         moment(this.props.createdTimeExtractor(item)).valueOf() / 1000;
- 
+
       return (
         new Date().getTime() / 1000 - created < this.props.editMinuteLimit * 60
       );
@@ -262,7 +267,8 @@ export default class Comments extends PureComponent {
           this.setLikesModalVisible(false), like.tap(like.name);
         }}
         style={styles.likeButton}
-        key={like.user_id + ""}>
+        key={like.user_id + ""}
+      >
         <View style={[styles.likeContainer]}>
           <Image style={[styles.likeImage]} source={{ uri: like.image }} />
           <Text style={[styles.likeName]}>{like.name}</Text>
@@ -311,7 +317,8 @@ export default class Comments extends PureComponent {
           <Collapsible
             easing={"easeOutCubic"}
             duration={400}
-            collapsed={!this.isExpanded(this.props.keyExtractor(item))}>
+            collapsed={!this.isExpanded(this.props.keyExtractor(item))}
+          >
             {this.props.childrenCountExtractor(item) &&
             this.props.paginateAction ? (
               <View>
@@ -325,8 +332,14 @@ export default class Comments extends PureComponent {
                         "down",
                         this.props.keyExtractor(item)
                       )
-                    }>
-                    <Text style={{ textAlign: "center", paddingTop: 15 }}>
+                    }
+                  >
+                    <Text
+                      style={[
+                        { textAlign: "center", paddingTop: 15 },
+                        this.getStyle("previousText")
+                      ]}
+                    >
                       Show previous...
                     </Text>
                   </TouchableHighlight>
@@ -347,8 +360,14 @@ export default class Comments extends PureComponent {
                         "up",
                         this.props.keyExtractor(item)
                       )
-                    }>
-                    <Text style={{ textAlign: "center", paddingTop: 15 }}>
+                    }
+                  >
+                    <Text
+                      style={[
+                        { textAlign: "center", paddingTop: 15 },
+                        this.getStyle("moreText")
+                      ]}
+                    >
                       Show more...
                     </Text>
                   </TouchableHighlight>
@@ -377,7 +396,8 @@ export default class Comments extends PureComponent {
                   );
                   this.setState({ replyCommentText: null });
                   Keyboard.dismiss();
-                }}>
+                }}
+              >
                 {this.renderIcon({
                   style: styles.submit,
                   name: "caret-right",
@@ -410,7 +430,8 @@ export default class Comments extends PureComponent {
               this.setState({ newCommentText: null });
               this.textInputs["inputMain"].clear();
               Keyboard.dismiss();
-            }}>
+            }}
+          >
             {this.renderIcon({
               style: styles.submit,
               name: "caret-right",
@@ -433,9 +454,15 @@ export default class Comments extends PureComponent {
                 this.props.keyExtractor(this.props.data[0]),
                 "down"
               );
-            }}>
+            }}
+          >
             <View>
-              <Text style={{ textAlign: "center", color: "gray" }}>
+              <Text
+                style={[
+                  { textAlign: "center", color: "gray" },
+                  this.getStyle("previousText")
+                ]}
+              >
                 Show previous
               </Text>
             </View>
@@ -462,7 +489,8 @@ export default class Comments extends PureComponent {
               bottom: 0,
               height: 60,
               backgroundColor: "rgba(255,255,255, 0.9)"
-            }}>
+            }}
+          >
             <ActivityIndicator
               animating={true}
               style={{
@@ -489,7 +517,8 @@ export default class Comments extends PureComponent {
                 ),
                 "up"
               );
-            }}>
+            }}
+          >
             <Text style={{ textAlign: "center", color: "gray" }}>
               Show more
             </Text>
@@ -506,7 +535,8 @@ export default class Comments extends PureComponent {
           visible={this.state.likesModalVisible}
           onRequestClose={() => {
             this.setLikesModalVisible(false);
-          }}>
+          }}
+        >
           <TouchableHighlight
             onPress={() => this.setLikesModalVisible(false)}
             style={{
@@ -515,7 +545,8 @@ export default class Comments extends PureComponent {
               zIndex: 9,
               alignSelf: "flex-end",
               top: 10
-            }}>
+            }}
+          >
             <View style={{ position: "relative", left: 50, top: 5 }}>
               {this.renderIcon({ name: "times", size: 40 })}
             </View>
@@ -541,7 +572,8 @@ export default class Comments extends PureComponent {
           onRequestClose={() => {
             this.setEditModalVisible(false);
             this.setState({ editModalData: null });
-          }}>
+          }}
+        >
           <View style={styles.editModalContainer}>
             <View style={styles.editModal}>
               <TextInput
@@ -557,9 +589,11 @@ export default class Comments extends PureComponent {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-around"
-                }}>
+                }}
+              >
                 <TouchableHighlight
-                  onPress={() => this.setEditModalVisible(false)}>
+                  onPress={() => this.setEditModalVisible(false)}
+                >
                   <View style={styles.editButtons}>
                     <Text>Cancel</Text>
                     {this.renderIcon({ name: "times", size: 20 })}
@@ -572,7 +606,8 @@ export default class Comments extends PureComponent {
                       this.state.editingComment
                     );
                     this.setEditModalVisible(!this.state.editModalVisible);
-                  }}>
+                  }}
+                >
                   <View style={styles.editButtons}>
                     <Text>Save</Text>
                     {this.renderIcon({ name: "caret-right", size: 20 })}

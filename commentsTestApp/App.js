@@ -141,6 +141,10 @@ export default class ExampleComments extends Component {
             data={data}
             //To compare is user the owner
             viewingUserName={"Pearline@veda.ca"}
+            // is the current user an admin
+            userIsAdmin={true}
+            // Styles to pass. Search for getStyles to find out what can be overwritten
+            styles={{}}
             //how many comments to display on init
             initialDisplayCount={5}
             //How many minutes to pass before locking for editing
